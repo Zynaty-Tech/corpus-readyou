@@ -53,6 +53,8 @@ import me.ash.reader.ui.page.settings.tips.LicenseListPage
 import me.ash.reader.ui.page.settings.tips.TipsAndSupportPage
 import me.ash.reader.ui.page.settings.troubleshooting.TroubleshootingPage
 import me.ash.reader.ui.page.startup.StartupPage
+import me.ash.reader.ui.qa.exposeTestTags
+import me.ash.reader.ui.qa.screenTagged
 
 private const val INITIAL_OFFSET_FACTOR = 0.10f
 
@@ -79,7 +81,7 @@ fun AppEntry(backStack: NavBackStack<NavKey>) {
 
     SharedTransitionLayout {
         NavDisplay(
-            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface),
+            modifier = Modifier.exposeTestTags().fillMaxSize().background(MaterialTheme.colorScheme.surface),
             backStack = backStack,
             entryDecorators =
                 listOf(
@@ -107,8 +109,9 @@ fun AppEntry(backStack: NavBackStack<NavKey>) {
                     materialSharedAxisXOut(targetOffsetX = { (it * INITIAL_OFFSET_FACTOR).toInt() })
             },
             onBack = { backStack.removeLastOrNull() },
+            // mqa: every entry carries screen:<key class name> (debug only), see ui/qa/ScreenTags.kt
             entryProvider = { key ->
-                when (key) {
+                screenTagged(key, when (key) {
                     Route.Feeds -> {
                         NavEntry(key) {
                             FeedsPage(
@@ -274,7 +277,7 @@ fun AppEntry(backStack: NavBackStack<NavKey>) {
                         }
                     Route.LicenseList -> NavEntry(key) { LicenseListPage(onBack = onBack) }
                     else -> NavEntry(key) { throw Exception("Unknown destination") }
-                }
+                })
             },
         )
     }

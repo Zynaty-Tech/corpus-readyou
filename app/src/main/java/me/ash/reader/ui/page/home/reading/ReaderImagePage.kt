@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.home.reading
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
+import me.ash.reader.ui.qa.overlayRoot
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
@@ -65,7 +68,7 @@ fun ReaderImageViewer(
         properties =
             DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false),
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.overlayRoot(overlayTagName("ImageViewer")).fillMaxSize()) {
             val view = LocalView.current
             val context = LocalContext.current
 
@@ -131,7 +134,7 @@ fun ReaderImageViewer(
                             containerColor = Color.Black.copy(alpha = 0.5f),
                             contentColor = Color.White,
                         ),
-                    modifier = Modifier.padding(4.dp),
+                    modifier = Modifier.padding(4.dp).controlTag("Button.close"),
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Close,
@@ -142,8 +145,13 @@ fun ReaderImageViewer(
                 Spacer(Modifier.weight(1f))
 
                 Box(modifier = Modifier.wrapContentSize(Alignment.TopEnd)) {
-                    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                    DropdownMenu(
+                        modifier = Modifier.overlayRoot(overlayTagName("ImageMenu")),
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                    ) {
                         DropdownMenuItem(
+                            modifier = Modifier.controlTag("Option.save"),
                             text = { Text(text = stringResource(id = R.string.save)) },
                             onClick = {
                                 val isStoragePermissionGranted =
@@ -168,7 +176,7 @@ fun ReaderImageViewer(
                                 containerColor = Color.Black.copy(alpha = 0.5f),
                                 contentColor = Color.White,
                             ),
-                        modifier = Modifier.padding(4.dp),
+                        modifier = Modifier.padding(4.dp).controlTag("Button.more"),
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.MoreHoriz,

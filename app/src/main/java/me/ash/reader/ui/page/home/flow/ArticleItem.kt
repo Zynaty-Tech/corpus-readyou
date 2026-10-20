@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.home.flow
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
+import me.ash.reader.ui.qa.overlayRoot
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -139,6 +142,7 @@ fun ArticleItem(
                 .padding(horizontal = 12.dp)
                 .clip(Shape20)
                 .combinedClickable(onClick = onClick, onLongClick = onLongClick)
+                .controlTag("Row.Article")
                 .padding(horizontal = 12.dp, vertical = 12.dp)
                 .alpha(
                     when (articleListReadIndicator) {
@@ -367,7 +371,7 @@ fun SwipeableArticleItem(
             with(articleWithFeed.article) {
                 if (isMenuEnabled) {
                     AnimatedDropdownMenu(
-                        modifier = Modifier.padding(horizontal = 12.dp),
+                        modifier = Modifier.overlayRoot(overlayTagName("ArticleMenu")).padding(horizontal = 12.dp),
                         expanded = isMenuExpanded,
                         onDismissRequest = { isMenuExpanded = false },
                         offset = menuOffset,
@@ -587,6 +591,7 @@ fun ArticleItemMenuContent(
     val readText = stringResource(if (isRead) R.string.mark_as_unread else R.string.mark_as_read)
 
     DropdownMenuItem(
+        modifier = Modifier.controlTag("Option.ToggleRead"),
         text = { Text(text = readText) },
         onClick = {
             onToggleRead(articleWithFeed)
@@ -601,6 +606,7 @@ fun ArticleItemMenuContent(
         },
     )
     DropdownMenuItem(
+        modifier = Modifier.controlTag("Option.ToggleStarred"),
         text = { Text(text = starText) },
         onClick = {
             onToggleStarred(articleWithFeed)
@@ -620,6 +626,7 @@ fun ArticleItemMenuContent(
     }
     onMarkAboveAsRead?.let {
         DropdownMenuItem(
+            modifier = Modifier.controlTag("Option.mark_above_as_read"),
             text = { Text(text = stringResource(id = R.string.mark_above_as_read)) },
             onClick = {
                 onMarkAboveAsRead(articleWithFeed)
@@ -636,6 +643,7 @@ fun ArticleItemMenuContent(
     }
     onMarkBelowAsRead?.let {
         DropdownMenuItem(
+            modifier = Modifier.controlTag("Option.mark_below_as_read"),
             text = { Text(text = stringResource(id = R.string.mark_below_as_read)) },
             onClick = {
                 onMarkBelowAsRead(articleWithFeed)
@@ -653,6 +661,7 @@ fun ArticleItemMenuContent(
     onShare?.let {
         HorizontalDivider()
         DropdownMenuItem(
+            modifier = Modifier.controlTag("Option.share"),
             text = { Text(text = stringResource(id = R.string.share)) },
             onClick = {
                 onShare(articleWithFeed)

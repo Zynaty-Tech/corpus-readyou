@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.reading.tts
 
+import me.ash.reader.ui.qa.controlTag
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.widget.Toast
@@ -64,6 +65,7 @@ fun TtsButton(
                     modifier = modifier
                         .size(40.dp)
                         .clip(CircleShape)
+                        .controlTag("Button.read_aloud")
                         .clickable(onClick = {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.ContextClick)
                             onClick(state)
@@ -88,6 +90,7 @@ fun TtsButton(
                     modifier = modifier
                         .size(40.dp)
                         .clip(CircleShape)
+                        .controlTag("Button.read_aloud")
                         .combinedClickable(onClick = {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.ContextClick)
                             onClick(state)

@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.flow
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -106,7 +107,7 @@ fun SearchBar(
                     )
                 )
             }
-            IconButton(onClick = { onClose() }) {
+            IconButton(modifier = Modifier.controlTag("Button.clear"), onClick = { onClose() }) {
                 Icon(
                     imageVector = Icons.Rounded.Close,
                     contentDescription = stringResource(R.string.clear),

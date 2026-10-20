@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.settings.accounts
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.optionKey
+import me.ash.reader.ui.qa.overlayTagName
 import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -116,6 +119,7 @@ fun AccountDetailsPage(
             MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -125,7 +129,7 @@ fun AccountDetailsPage(
         actions = {
             val haptic = LocalHapticFeedback.current
             Button(
-                modifier = Modifier.padding(end = 8.dp),
+                modifier = Modifier.padding(end = 8.dp).controlTag("Button.done"),
                 onClick = {
                     haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
                     navigateToFeeds()
@@ -141,7 +145,7 @@ fun AccountDetailsPage(
             }
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = selectedAccount?.type?.toDesc(context) ?: "", desc = "")
                     Spacer(modifier = Modifier.height(16.dp))
@@ -152,6 +156,7 @@ fun AccountDetailsPage(
                         text = stringResource(R.string.display),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.name"),
                         title = stringResource(R.string.name),
                         desc = selectedAccount?.name ?: "",
                         onClick = {
@@ -171,6 +176,7 @@ fun AccountDetailsPage(
                     )
                     selectedAccount?.let {
                         SettingItem(
+                            modifier = Modifier.controlTag("Tap.last_updated"),
                             title = stringResource(R.string.last_updated),
                             desc = selectedAccount.updateAt.toString(),
                             onClick = {},
@@ -179,11 +185,13 @@ fun AccountDetailsPage(
                     }
 
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.syncInterval"),
                         title = stringResource(R.string.sync_interval),
                         desc = selectedAccount?.syncInterval?.toDesc(context),
                         onClick = { syncIntervalDialogVisible = true },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.sync_once_on_start"),
                         title = stringResource(R.string.sync_once_on_start),
                         onClick = {
                             selectedAccount?.id?.let {
@@ -191,13 +199,14 @@ fun AccountDetailsPage(
                             }
                         },
                     ) {
-                        RYSwitch(activated = selectedAccount?.syncOnStart?.value == true) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.syncOnStart"), activated = selectedAccount?.syncOnStart?.value == true) {
                             selectedAccount?.id?.let {
                                 (!selectedAccount.syncOnStart).put(it, viewModel)
                             }
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.only_on_wifi"),
                         title = stringResource(R.string.only_on_wifi),
                         onClick = {
                             selectedAccount?.id?.let {
@@ -205,13 +214,14 @@ fun AccountDetailsPage(
                             }
                         },
                     ) {
-                        RYSwitch(activated = selectedAccount?.syncOnlyOnWiFi?.value == true) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.syncOnlyOnWiFi"), activated = selectedAccount?.syncOnlyOnWiFi?.value == true) {
                             selectedAccount?.id?.let {
                                 (!selectedAccount.syncOnlyOnWiFi).put(it, viewModel)
                             }
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.only_when_charging"),
                         title = stringResource(R.string.only_when_charging),
                         onClick = {
                             selectedAccount?.id?.let {
@@ -219,13 +229,14 @@ fun AccountDetailsPage(
                             }
                         },
                     ) {
-                        RYSwitch(activated = selectedAccount?.syncOnlyWhenCharging?.value == true) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.syncOnlyWhenCharging"), activated = selectedAccount?.syncOnlyWhenCharging?.value == true) {
                             selectedAccount?.id?.let {
                                 (!selectedAccount.syncOnlyWhenCharging).put(it, viewModel)
                             }
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.keepArchived"),
                         title = stringResource(R.string.keep_archived_articles),
                         desc = selectedAccount?.keepArchived?.toDesc(context),
                         onClick = { keepArchivedDialogVisible = true },
@@ -248,14 +259,17 @@ fun AccountDetailsPage(
                         text = stringResource(R.string.advanced),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.exportOPMLMode"),
                         title = stringResource(R.string.export_as_opml),
                         onClick = { exportOPMLModeDialogVisible = true },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.Clear"),
                         title = stringResource(R.string.clear_all_articles),
                         onClick = { viewModel.showClearDialog() },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.Delete"),
                         title = stringResource(R.string.delete_account),
                         onClick = { viewModel.showDeleteDialog() },
                     ) {}
@@ -274,6 +288,7 @@ fun AccountDetailsPage(
     if (nameDialogVisible) {
         val textFieldState = rememberTextFieldState(nameValue ?: "")
         TextFieldDialog(
+            overlayTag = overlayTagName("NameDialog"),
             title = stringResource(R.string.name),
             textFieldState = textFieldState,
             onDismissRequest = { nameDialogVisible = false },
@@ -289,11 +304,13 @@ fun AccountDetailsPage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("SyncIntervalDialog"),
         visible = syncIntervalDialogVisible,
         title = stringResource(R.string.sync_interval),
         options =
             SyncIntervalPreference.values.map {
                 RadioDialogOption(
+                    key = optionKey(it),
                     text = it.toDesc(context),
                     selected = it == selectedAccount?.syncInterval,
                 ) {
@@ -305,11 +322,13 @@ fun AccountDetailsPage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("KeepArchivedDialog"),
         visible = keepArchivedDialogVisible,
         title = stringResource(R.string.keep_archived_articles),
         options =
             KeepArchivedPreference.values.map {
                 RadioDialogOption(
+                    key = optionKey(it),
                     text = it.toDesc(context),
                     selected = it == selectedAccount?.keepArchived,
                 ) {
@@ -321,6 +340,7 @@ fun AccountDetailsPage(
     }
 
     TextFieldDialog(
+        overlayTag = overlayTagName("BlockListDialog"),
         visible = blockListDialogVisible,
         title = stringResource(R.string.block_list),
         value = blockListValue,
@@ -337,6 +357,7 @@ fun AccountDetailsPage(
     )
 
     RYDialog(
+        overlayTag = overlayTagName("ClearDialog"),
         visible = uiState.clearDialogVisible,
         onDismissRequest = { viewModel.hideClearDialog() },
         icon = {
@@ -349,6 +370,7 @@ fun AccountDetailsPage(
         text = { Text(text = stringResource(R.string.clear_all_articles_tips)) },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.clear"),
                 onClick = {
                     selectedAccount?.let {
                         viewModel.clear(it) {
@@ -364,13 +386,14 @@ fun AccountDetailsPage(
             }
         },
         dismissButton = {
-            TextButton(onClick = { viewModel.hideClearDialog() }) {
+            TextButton(modifier = Modifier.controlTag("Button.cancel"), onClick = { viewModel.hideClearDialog() }) {
                 Text(text = stringResource(R.string.cancel))
             }
         },
     )
 
     RYDialog(
+        overlayTag = overlayTagName("DeleteDialog"),
         visible = uiState.deleteDialogVisible,
         onDismissRequest = { viewModel.hideDeleteDialog() },
         icon = {
@@ -383,6 +406,7 @@ fun AccountDetailsPage(
         text = { Text(text = stringResource(R.string.delete_account_tips)) },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.delete"),
                 onClick = {
                     selectedAccount?.id?.let {
                         viewModel.delete(it) {
@@ -396,13 +420,14 @@ fun AccountDetailsPage(
             }
         },
         dismissButton = {
-            TextButton(onClick = { viewModel.hideDeleteDialog() }) {
+            TextButton(modifier = Modifier.controlTag("Button.cancel"), onClick = { viewModel.hideDeleteDialog() }) {
                 Text(text = stringResource(R.string.cancel))
             }
         },
     )
 
     RYDialog(
+        overlayTag = overlayTagName("ExportOPMLModeDialog"),
         visible = exportOPMLModeDialogVisible,
         title = {
             Text(
@@ -413,7 +438,7 @@ fun AccountDetailsPage(
             )
         },
         text = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     Text(text = stringResource(R.string.additional_info_desc))
                     Spacer(modifier = Modifier.height(16.dp))
@@ -421,12 +446,14 @@ fun AccountDetailsPage(
                 items(
                     listOf(
                         RadioDialogOption(
+                            key = "ATTACH_INFO",
                             text = context.getString(R.string.include_additional_info),
                             selected = uiState.exportOPMLMode == ExportOPMLMode.ATTACH_INFO,
                         ) {
                             viewModel.changeExportOPMLMode(ExportOPMLMode.ATTACH_INFO)
                         },
                         RadioDialogOption(
+                            key = "NO_ATTACH",
                             text = context.getString(R.string.exclude),
                             selected = uiState.exportOPMLMode == ExportOPMLMode.NO_ATTACH,
                         ) {
@@ -436,12 +463,16 @@ fun AccountDetailsPage(
                 ) { option ->
                     Row(
                         modifier =
-                            Modifier.fillMaxWidth().clip(CircleShape).clickable {
+                            Modifier.controlTag("Option.${option.key}").fillMaxWidth().clip(CircleShape).clickable {
                                 option.onClick()
                             },
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        RadioButton(selected = option.selected, onClick = { option.onClick() })
+                        RadioButton(
+                            modifier = Modifier.controlTag("Option.${option.key}.Radio"),
+                            selected = option.selected,
+                            onClick = { option.onClick() },
+                        )
                         Text(
                             modifier = Modifier.padding(start = 6.dp),
                             text = option.text,
@@ -457,6 +488,7 @@ fun AccountDetailsPage(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.export"),
                 onClick = {
                     exportOPMLModeDialogVisible = false
                     subscriptionOPMLFileLauncher(context, launcher)
@@ -466,7 +498,7 @@ fun AccountDetailsPage(
             }
         },
         dismissButton = {
-            TextButton(onClick = { exportOPMLModeDialogVisible = false }) {
+            TextButton(modifier = Modifier.controlTag("Button.cancel"), onClick = { exportOPMLModeDialogVisible = false }) {
                 Text(stringResource(R.string.cancel))
             }
         },

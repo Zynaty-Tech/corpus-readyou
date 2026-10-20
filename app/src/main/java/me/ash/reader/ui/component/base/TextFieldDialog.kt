@@ -1,5 +1,6 @@
 package me.ash.reader.ui.component.base
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -26,6 +27,7 @@ import me.ash.reader.R
 fun TextFieldDialog(
     modifier: Modifier = Modifier,
     properties: DialogProperties = DialogProperties(),
+    overlayTag: String? = null,
     visible: Boolean,
     readOnly: Boolean = false,
     singleLine: Boolean = true,
@@ -51,6 +53,7 @@ fun TextFieldDialog(
 
     RYDialog(
         modifier = modifier,
+        overlayTag = overlayTag,
         properties = properties,
         visible = visible,
         onDismissRequest = onDismissRequest,
@@ -59,7 +62,7 @@ fun TextFieldDialog(
         text = {
             ClipboardTextField(
                 state = textFieldState,
-                modifier = modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth().controlTag("Field.Text"),
                 readOnly = readOnly,
                 singleLine = singleLine,
                 placeholder = placeholder,
@@ -71,6 +74,7 @@ fun TextFieldDialog(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.confirm"),
                 enabled = value.isNotBlank(),
                 onClick = {
                     focusManager.clearFocus()
@@ -88,7 +92,7 @@ fun TextFieldDialog(
                 )
             }
         },
-        dismissButton = { TextButton(onClick = onDismissRequest) { Text(text = dismissText) } },
+        dismissButton = { TextButton(modifier = Modifier.controlTag("Button.cancel"), onClick = onDismissRequest) { Text(text = dismissText) } },
     )
 }
 
@@ -97,6 +101,7 @@ fun TextFieldDialog(
     textFieldState: TextFieldState,
     modifier: Modifier = Modifier,
     properties: DialogProperties = DialogProperties(),
+    overlayTag: String? = null,
     visible: Boolean = false,
     readOnly: Boolean = false,
     singleLine: Boolean = true,
@@ -115,6 +120,7 @@ fun TextFieldDialog(
 
     RYDialog(
         modifier = modifier,
+        overlayTag = overlayTag,
         properties = properties,
         visible = visible,
         onDismissRequest = onDismissRequest,
@@ -123,7 +129,7 @@ fun TextFieldDialog(
         text = {
             ClipboardTextField(
                 state = textFieldState,
-                modifier = modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth().controlTag("Field.Text"),
                 readOnly = readOnly,
                 singleLine = singleLine,
                 placeholder = placeholder,
@@ -135,6 +141,7 @@ fun TextFieldDialog(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.confirm"),
                 enabled = textFieldState.text.isNotBlank(),
                 onClick = {
                     focusManager.clearFocus()
@@ -152,7 +159,7 @@ fun TextFieldDialog(
                 )
             }
         },
-        dismissButton = { TextButton(onClick = onDismissRequest) { Text(text = dismissText) } },
+        dismissButton = { TextButton(modifier = Modifier.controlTag("Button.cancel"), onClick = onDismissRequest) { Text(text = dismissText) } },
     )
 }
 
@@ -161,6 +168,7 @@ fun TextFieldDialog(
     textFieldState: TextFieldState,
     modifier: Modifier = Modifier,
     properties: DialogProperties = DialogProperties(),
+    overlayTag: String? = null,
     readOnly: Boolean = false,
     singleLine: Boolean = true,
     title: String = "",
@@ -176,8 +184,10 @@ fun TextFieldDialog(
 ) {
     val focusManager = LocalFocusManager.current
 
-    AlertDialog(
+    RYDialog(
+        visible = true,
         modifier = modifier,
+        overlayTag = overlayTag,
         properties = properties,
         onDismissRequest = onDismissRequest,
         icon = { icon?.let { Icon(imageVector = icon, contentDescription = title) } },
@@ -185,7 +195,7 @@ fun TextFieldDialog(
         text = {
             ClipboardTextField(
                 state = textFieldState,
-                modifier = modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth().controlTag("Field.Text"),
                 readOnly = readOnly,
                 singleLine = singleLine,
                 placeholder = placeholder,
@@ -197,6 +207,7 @@ fun TextFieldDialog(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.confirm"),
                 enabled = textFieldState.text.isNotBlank(),
                 onClick = {
                     focusManager.clearFocus()
@@ -214,6 +225,6 @@ fun TextFieldDialog(
                 )
             }
         },
-        dismissButton = { TextButton(onClick = onDismissRequest) { Text(text = dismissText) } },
+        dismissButton = { TextButton(modifier = Modifier.controlTag("Button.cancel"), onClick = onDismissRequest) { Text(text = dismissText) } },
     )
 }

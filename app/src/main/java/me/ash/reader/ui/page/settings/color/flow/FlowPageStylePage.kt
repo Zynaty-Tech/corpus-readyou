@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.settings.color.flow
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.optionKey
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -62,6 +65,7 @@ fun FlowPageStylePage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -69,7 +73,7 @@ fun FlowPageStylePage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.flow_page), desc = "")
                 }
@@ -85,7 +89,7 @@ fun FlowPageStylePage(
                                 MaterialTheme.colorScheme.inverseOnSurface
                                         onLight MaterialTheme.colorScheme.surface.copy(0.7f)
                             )
-                            .clickable { },
+                            .clickable { }.controlTag("Tap.Preview"),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -108,12 +112,14 @@ fun FlowPageStylePage(
                         text = stringResource(R.string.top_bar)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.mark_as_read_button_position"),
                         title = stringResource(R.string.mark_as_read_button_position),
                         desc = stringResource(R.string.top),
                         enabled = false,
                         onClick = {},
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.topBarTonalElevation"),
                         title = stringResource(R.string.tonal_elevation),
                         desc = "${topBarTonalElevation.value}dp",
                         onClick = {
@@ -131,36 +137,40 @@ fun FlowPageStylePage(
                         text = stringResource(R.string.article_list)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.articleListFeedIcon"),
                         title = stringResource(R.string.feed_favicons),
                         onClick = {
                             (!articleListFeedIcon).put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = articleListFeedIcon.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.articleListFeedIcon"), activated = articleListFeedIcon.value) {
                             (!articleListFeedIcon).put(context, scope)
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.articleListFeedName"),
                         title = stringResource(R.string.feed_names),
                         onClick = {
                             (!articleListFeedName).put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = articleListFeedName.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.articleListFeedName"), activated = articleListFeedName.value) {
                             (!articleListFeedName).put(context, scope)
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.articleListImage"),
                         title = stringResource(R.string.article_images),
                         onClick = {
                             (!articleListImage).put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = articleListImage.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.articleListImage"), activated = articleListImage.value) {
                             (!articleListImage).put(context, scope)
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.ArticleListDesc"),
                         title = stringResource(R.string.article_desc),
                         desc = articleListDesc.description(),
                         onClick = {
@@ -168,26 +178,29 @@ fun FlowPageStylePage(
                         },
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.articleListTime"),
                         title = stringResource(R.string.article_date),
                         onClick = {
                             (!articleListTime).put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = articleListTime.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.articleListTime"), activated = articleListTime.value) {
                             (!articleListTime).put(context, scope)
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.articleListStickyDate"),
                         title = stringResource(R.string.article_date_sticky_header),
                         onClick = {
                             (!articleListStickyDate).put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = articleListStickyDate.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.articleListStickyDate"), activated = articleListStickyDate.value) {
                             (!articleListStickyDate).put(context, scope)
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.articleListReadIndicator"),
                         title = stringResource(R.string.grey_out_articles),
                         desc = articleListReadIndicator.description,
                         onClick = {
@@ -195,6 +208,7 @@ fun FlowPageStylePage(
                         }
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.SortUnreadArticles"),
                         title = stringResource(R.string.sort_unread_articles),
                         onClick = {
                             showSortUnreadArticlesDialog = true
@@ -204,6 +218,7 @@ fun FlowPageStylePage(
                     }
 
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.PullToLoad"),
                         title = stringResource(R.string.pull_from_bottom),
                         desc = pullToSwitchFeed.description(),
                         onClick = {
@@ -212,6 +227,7 @@ fun FlowPageStylePage(
                     )
 
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.articleListTonalElevation"),
                         title = stringResource(R.string.tonal_elevation),
                         desc = "${articleListTonalElevation.value}dp",
                         onClick = {
@@ -229,6 +245,7 @@ fun FlowPageStylePage(
                         text = stringResource(R.string.filter_bar),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.filterBarStyle"),
                         title = stringResource(R.string.style),
                         desc = filterBarStyle.toDesc(context),
                         onClick = {
@@ -236,6 +253,7 @@ fun FlowPageStylePage(
                         },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.filterBarPadding"),
                         title = stringResource(R.string.horizontal_padding),
                         desc = "${filterBarPadding}dp",
                         onClick = {
@@ -244,6 +262,7 @@ fun FlowPageStylePage(
                         },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.filterBarTonalElevation"),
                         title = stringResource(R.string.tonal_elevation),
                         desc = "${filterBarTonalElevation.value}dp",
                         onClick = {
@@ -260,10 +279,12 @@ fun FlowPageStylePage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("FilterBarStyleDialog"),
         visible = filterBarStyleDialogVisible,
         title = stringResource(R.string.style),
         options = FlowFilterBarStylePreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == filterBarStyle,
             ) {
@@ -275,6 +296,7 @@ fun FlowPageStylePage(
     }
 
     TextFieldDialog(
+        overlayTag = overlayTagName("FilterBarPaddingDialog"),
         visible = filterBarPaddingDialogVisible,
         title = stringResource(R.string.horizontal_padding),
         value = (filterBarPaddingValue ?: "").toString(),
@@ -292,10 +314,12 @@ fun FlowPageStylePage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("FilterBarTonalElevationDialog"),
         visible = filterBarTonalElevationDialogVisible,
         title = stringResource(R.string.tonal_elevation),
         options = FlowFilterBarTonalElevationPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == filterBarTonalElevation,
             ) {
@@ -307,10 +331,12 @@ fun FlowPageStylePage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("TopBarTonalElevationDialog"),
         visible = topBarTonalElevationDialogVisible,
         title = stringResource(R.string.tonal_elevation),
         options = FlowTopBarTonalElevationPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == topBarTonalElevation,
             ) {
@@ -322,10 +348,12 @@ fun FlowPageStylePage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("ArticleListTonalElevationDialog"),
         visible = articleListTonalElevationDialogVisible,
         title = stringResource(R.string.tonal_elevation),
         options = FlowArticleListTonalElevationPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == articleListTonalElevation,
             ) {
@@ -337,10 +365,12 @@ fun FlowPageStylePage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("ArticleListDescDialog"),
         visible = showArticleListDescDialog,
         title = stringResource(R.string.article_desc),
         options = FlowArticleListDescPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.description(),
                 selected = it == articleListDesc,
             ) {
@@ -353,10 +383,12 @@ fun FlowPageStylePage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("ArticleListReadIndicatorDialog"),
         visible = articleListReadIndicatorDialogVisible,
         title = stringResource(id = R.string.grey_out_articles),
         options = FlowArticleReadIndicatorPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.description,
                 selected = it == articleListReadIndicator
             ) {
@@ -368,10 +400,12 @@ fun FlowPageStylePage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("SortUnreadArticlesDialog"),
         visible = showSortUnreadArticlesDialog,
         title = stringResource(R.string.sort_unread_articles),
         options = SortUnreadArticlesPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.description(),
                 selected = it == sortUnreadArticles,
             ) {
@@ -384,10 +418,12 @@ fun FlowPageStylePage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("PullToLoadDialog"),
         visible = showPullToLoadDialog,
         title = stringResource(R.string.pull_from_bottom),
         options = PullToLoadNextFeedPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.description(),
                 selected = it == pullToSwitchFeed,
             ) {

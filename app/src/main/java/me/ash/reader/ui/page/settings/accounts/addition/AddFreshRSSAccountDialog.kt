@@ -1,5 +1,7 @@
 package me.ash.reader.ui.page.settings.accounts.addition
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import android.app.Activity
 import android.security.KeyChain
 import androidx.compose.foundation.clickable
@@ -68,6 +70,7 @@ fun AddFreshRSSAccountDialog(
     var freshRSSClientCertificateAlias by rememberSaveable { mutableStateOf("") }
 
     RYDialog(
+        overlayTag = overlayTagName("AddFreshRSSAccountDialog"),
         modifier = Modifier.padding(horizontal = 44.dp),
         visible = uiState.addFreshRSSAccountDialogVisible,
         properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -147,6 +150,7 @@ fun AddFreshRSSAccountDialog(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.add"),
                 enabled = !accountUiState.isLoading
                         && freshRSSServerUrl.isNotBlank()
                         && freshRSSUsername.isNotEmpty()
@@ -183,6 +187,7 @@ fun AddFreshRSSAccountDialog(
         },
         dismissButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.cancel"),
                 onClick = {
                     accountViewModel.cancelAdd()
                     focusManager.clearFocus()

@@ -1,5 +1,10 @@
 package me.ash.reader.ui.page.settings.tips
 
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
+import me.ash.reader.ui.qa.overlayRoot
 import android.view.HapticFeedbackConstants
 import android.view.SoundEffectConstants
 import androidx.compose.animation.animateContentSize
@@ -138,45 +143,8 @@ fun TipsAndSupportPage(
         currentVersion = context.getCurrentVersion().toString()
     }
 
-    RYScaffold(
-        containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
-        navigationIcon = {
-            FeedbackIconButton(
-                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                contentDescription = stringResource(R.string.back),
-                tint = MaterialTheme.colorScheme.onSurface,
-                onClick = onBack
-            )
-        },
-        actions = {
-            FeedbackIconButton(
-                modifier = Modifier.size(20.dp),
-                imageVector = Icons.Rounded.Balance,
-                contentDescription = stringResource(R.string.open_source_licenses),
-                tint = MaterialTheme.colorScheme.onSurface,
-                onClick = navigateToLicenseList
-            )
-        },
-        content = {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceAround,
-            ) {
-                item {
-                    Column(
-                        modifier = Modifier.pointerInput(Unit) {
-                            detectTapGestures(
-                                onPress = {
-                                    view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                                    scope.launch { morphProgress.animateTo(1f, morphSpec) }
-                                    tryAwaitRelease()
-                                    scope.launch { morphProgress.animateTo(0f, morphSpec) }
-                                    view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                                    view.playSoundEffect(SoundEffectConstants.CLICK)
-                                },
-                                onTap = {
-                                    updateViewModel.checkUpdate(
+    val checkUpdateOnTap: () -> Unit = {
+        updateViewModel.checkUpdate(
                                         {
                                             context.showToast(context.getString(R.string.checking_updates))
                                             context.dataStore.put(
@@ -192,7 +160,57 @@ fun TipsAndSupportPage(
                                             }
                                         }
                                     )
+    }
+
+    RYScaffold(
+        containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
+        navigationIcon = {
+            FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
+                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                contentDescription = stringResource(R.string.back),
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = onBack
+            )
+        },
+        actions = {
+            FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.open_source_licenses"),
+                modifier = Modifier.size(20.dp),
+                imageVector = Icons.Rounded.Balance,
+                contentDescription = stringResource(R.string.open_source_licenses),
+                tint = MaterialTheme.colorScheme.onSurface,
+                onClick = navigateToLicenseList
+            )
+        },
+        content = {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize().controlTag("List"),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceAround,
+            ) {
+                item {
+                    Column(
+                        modifier = Modifier
+                            .controlTag("Tap.CheckUpdate")
+                            // mqa: the tap gesture publishes no click action; this one does the same as onTap
+                            .semantics {
+                                onClick(label = null) {
+                                    checkUpdateOnTap()
+                                    true
                                 }
+                            }
+                            .pointerInput(Unit) {
+                            detectTapGestures(
+                                onPress = {
+                                    view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                    scope.launch { morphProgress.animateTo(1f, morphSpec) }
+                                    tryAwaitRelease()
+                                    scope.launch { morphProgress.animateTo(0f, morphSpec) }
+                                    view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                                    view.playSoundEffect(SoundEffectConstants.CLICK)
+                                },
+                                onTap = { checkUpdateOnTap() },
                             )
                         },
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -306,7 +324,7 @@ fun TipsAndSupportPage(
 
     UpdateDialog()
     if (showSponsorDialog) {
-        SponsorDialog { showSponsorDialog = false }
+        SponsorDialog(modifier = Modifier.overlayRoot(overlayTagName("SponsorSheet"))) { showSponsorDialog = false }
     }
 }
 
@@ -377,6 +395,7 @@ sealed class RoundIconButtonType(
 private fun RoundIconButton(type: RoundIconButtonType) {
     IconButton(
         modifier = Modifier
+            .controlTag("Button.${type::class.simpleName}")
             .size(70.dp)
             .background(
                 color = type.backgroundColor,

@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.reading
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -66,7 +67,7 @@ fun Content(
                         title = title,
                         author = author,
                         publishedDate = publishedDate,
-                        modifier = Modifier.roundClick { link?.let { uriHandler.openUri(it) } },
+                        modifier = Modifier.controlTag("Tap.Link").roundClick { link?.let { uriHandler.openUri(it) } },
                     )
                 }
             }
@@ -113,7 +114,7 @@ fun Content(
             ReadingRendererPreference.NativeComponent -> {
                 SelectionContainer {
                     LazyColumn(
-                        modifier = modifier.fillMaxSize().drawVerticalScrollIndicator(listState),
+                        modifier = modifier.fillMaxSize().drawVerticalScrollIndicator(listState).controlTag("List"),
                         state = listState,
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {

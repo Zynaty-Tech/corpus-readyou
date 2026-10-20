@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.settings.tips
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.add
@@ -34,6 +35,7 @@ fun LicenseListPage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -42,6 +44,7 @@ fun LicenseListPage(
         },
         actions = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.open_source_licenses"),
                 modifier = Modifier.size(20.dp),
                 imageVector = Icons.Rounded.Star,
                 contentDescription = stringResource(R.string.open_source_licenses),

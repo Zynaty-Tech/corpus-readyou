@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.settings.color.feeds
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -61,6 +62,7 @@ fun FeedsPagePreview(
             title = {},
             navigationIcon = {
                 FeedbackIconButton(
+                    buttonModifier = Modifier.controlTag("Action.back"),
                     imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                     contentDescription = stringResource(R.string.back),
                     tint = MaterialTheme.colorScheme.onSurface
@@ -68,11 +70,13 @@ fun FeedsPagePreview(
             },
             actions = {
                 FeedbackIconButton(
+                    buttonModifier = Modifier.controlTag("Action.refresh"),
                     imageVector = Icons.Rounded.Refresh,
                     contentDescription = stringResource(R.string.refresh),
                     tint = MaterialTheme.colorScheme.onSurface,
                 )
                 FeedbackIconButton(
+                    buttonModifier = Modifier.controlTag("Action.subscribe"),
                     imageVector = Icons.Rounded.Add,
                     contentDescription = stringResource(R.string.subscribe),
                     tint = MaterialTheme.colorScheme.onSurface,

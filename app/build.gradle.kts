@@ -51,6 +51,10 @@ android {
             "\"ReadYou/${versionName}(${versionCode})\"",
         )
 
+        // mqa screen tags and control ids: false here so every build type is safe by omission;
+        // true only in debug (see buildTypes). Never true in a build type that reaches users.
+        buildConfigField("boolean", "EXPOSE_TEST_TAGS", "false")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -90,6 +94,7 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
         }
+        getByName("debug") { buildConfigField("boolean", "EXPOSE_TEST_TAGS", "true") }
         all { signingConfig = signingConfigs.getByName("release") }
     }
     applicationVariants.all {

@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.feeds
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -184,7 +185,7 @@ fun FeedsPage(
         topBar = {
             TopAppBar(
                 modifier =
-                    Modifier.clickable(
+                    Modifier.controlTag("Tap.TopBar").clickable(
                         onClick = {
                             scope.launch {
                                 if (listState.firstVisibleItemIndex != 0) {
@@ -198,6 +199,7 @@ fun FeedsPage(
                 title = {},
                 navigationIcon = {
                     FeedbackIconButton(
+                        buttonModifier = Modifier.controlTag("Action.settings"),
                         modifier = Modifier.size(20.dp),
                         imageVector = Icons.Outlined.Settings,
                         contentDescription = stringResource(R.string.settings),
@@ -210,6 +212,7 @@ fun FeedsPage(
                 actions = {
                     if (subscribeViewModel.rssService.get().addSubscription) {
                         FeedbackIconButton(
+                            buttonModifier = Modifier.controlTag("Action.subscribe"),
                             imageVector = Icons.Rounded.Add,
                             contentDescription = stringResource(R.string.subscribe),
                             tint = MaterialTheme.colorScheme.onSurface,
@@ -229,15 +232,16 @@ fun FeedsPage(
         },
         content = {
             PullToRefreshBox(state = syncingState, isRefreshing = isSyncing, onRefresh = doSync) {
-                LazyColumn(modifier = Modifier.fillMaxSize().drawVerticalScrollIndicator(listState), state = listState) {
+                LazyColumn(modifier = Modifier.controlTag("List").fillMaxSize().drawVerticalScrollIndicator(listState), state = listState) {
                     item {
-                        DisplayText(text = feedsUiState.account?.name ?: "", desc = "") {
+                        DisplayText(modifier = Modifier.controlTag("Tap.AccountsDialog"), text = feedsUiState.account?.name ?: "", desc = "") {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.ContextClick)
                             accountTabVisible = true
                         }
                     }
                     item {
                         FeedsBanner(
+                            modifier = Modifier.controlTag("Tap.Banner"),
                             filter = filterState.filter,
                             desc = importantSum.ifEmpty { stringResource(R.string.loading) },
                         ) {
@@ -266,7 +270,7 @@ fun FeedsPage(
                                 },
                                 modifier = Modifier
                                     .padding(end = 8.dp)
-                                    .size(28.dp),
+                                    .size(28.dp).controlTag("Button.unfold_less"),
                             ) {
                                 Icon(
                                     imageVector =

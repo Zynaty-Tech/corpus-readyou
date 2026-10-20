@@ -1,5 +1,7 @@
 package me.ash.reader.ui.page.settings.color
 
+import me.ash.reader.ui.qa.optionKey
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -36,6 +38,7 @@ fun DarkThemePage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -43,19 +46,20 @@ fun DarkThemePage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.dark_theme), desc = "")
                 }
                 item {
                     DarkThemePreference.values.map {
                         SettingItem(
+                            modifier = Modifier.controlTag("Tap.${optionKey(it)}"),
                             title = it.toDesc(context),
                             onClick = {
                                 it.put(context, scope)
                             },
                         ) {
-                            RadioButton(selected = it == darkTheme, onClick = {
+                            RadioButton(modifier = Modifier.controlTag("Option.${optionKey(it)}.Radio"), selected = it == darkTheme, onClick = {
                                 it.put(context, scope)
                             })
                         }
@@ -65,12 +69,13 @@ fun DarkThemePage(
                         text = stringResource(R.string.other),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.amoledDarkTheme"),
                         title = stringResource(R.string.amoled_dark_theme),
                         onClick = {
                             (!amoledDarkTheme).put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = amoledDarkTheme.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.amoledDarkTheme"), activated = amoledDarkTheme.value) {
                             (!amoledDarkTheme).put(context, scope)
                         }
                     }

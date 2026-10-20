@@ -30,6 +30,8 @@ fun FeedbackIconButton(
     showBadge: Boolean = false,
     isHaptic: Boolean? = true,
     isSound: Boolean? = true,
+    /** Applied to the clickable IconButton (control ids); [modifier] stays on the icon. */
+    buttonModifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
     val view = LocalView.current
@@ -48,6 +50,7 @@ fun FeedbackIconButton(
         }
     ) {
         IconButton(
+            modifier = buttonModifier,
             enabled = enabled,
             onClick = {
                 if (isHaptic == true) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)

@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.settings.tips
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -96,6 +97,7 @@ private fun SponsorItem(
         modifier =
         modifier
             .fillMaxWidth()
+            .controlTag("Row.Sponsor")
             .clickable(
                 enabled = true,
                 indication = null,
@@ -127,7 +129,7 @@ private fun SponsorItem(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        FilledTonalButton(onClick = onClick, interactionSource = interactionSource) {
+        FilledTonalButton(modifier = Modifier.controlTag("Button.sponsor"), onClick = onClick, interactionSource = interactionSource) {
             Text(stringResource(R.string.sponsor))
         }
     }

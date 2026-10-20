@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.settings.accounts
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,6 +38,7 @@ fun AccountsPage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -44,7 +46,7 @@ fun AccountsPage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.accounts), desc = "")
                     Spacer(modifier = Modifier.height(16.dp))
@@ -56,6 +58,7 @@ fun AccountsPage(
                 accounts.forEach {
                     item {
                         SettingItem(
+                            modifier = Modifier.controlTag("Tap.AccountDetails"),
                             title = it.name,
                             desc = it.type.toDesc(context),
                             icon = it.type.toIcon().takeIf { it is ImageVector }?.let { it as ImageVector },
@@ -74,6 +77,7 @@ fun AccountsPage(
                         text = stringResource(R.string.more),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.AddAccount"),
                         title = stringResource(R.string.add_accounts),
                         desc = stringResource(R.string.add_accounts_desc),
                         icon = Icons.Outlined.PersonAdd,

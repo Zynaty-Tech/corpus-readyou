@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.feeds
 
+import me.ash.reader.ui.qa.controlTag
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -45,6 +46,7 @@ fun GroupItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .controlTag("Row.Group")
             .combinedClickable(
                 onClick = {
                     groupOnClick()
@@ -77,7 +79,8 @@ fun GroupItem(
                     .size(24.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                    .clickable { onExpanded() },
+                    .clickable { onExpanded() }
+                    .controlTag("Row.Group.Expand"),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {

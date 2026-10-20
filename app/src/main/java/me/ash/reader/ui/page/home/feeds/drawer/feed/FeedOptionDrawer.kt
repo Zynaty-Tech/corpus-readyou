@@ -1,5 +1,7 @@
 package me.ash.reader.ui.page.home.feeds.drawer.feed
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import android.view.HapticFeedbackConstants
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
@@ -67,6 +69,7 @@ fun FeedOptionDrawer(
 
     BottomDrawer(
         drawerState = drawerState,
+        sheetTag = overlayTagName("FeedOptionDrawer"),
         sheetContent = {
             Column(modifier = Modifier.navigationBarsPadding()) {
                 Column(
@@ -74,12 +77,12 @@ fun FeedOptionDrawer(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    FeedIcon(modifier = Modifier.clickable {
+                    FeedIcon(modifier = Modifier.controlTag("Tap.ReloadIcon").clickable {
                         feedOptionViewModel.reloadIcon()
                     }, feedName = feed?.name, iconUrl = feed?.icon, size = 24.dp)
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        modifier = Modifier.alphaIndicationClickable {
+                        modifier = Modifier.controlTag("Tap.Rename").alphaIndicationClickable {
                             if (feedOptionViewModel.rssService.get().updateSubscription) {
                                 feedOptionViewModel.showRenameDialog()
                             }
@@ -150,6 +153,7 @@ fun FeedOptionDrawer(
         onConfirm = { scope.launch { drawerState.hide() } })
 
     TextFieldDialog(
+        overlayTag = overlayTagName("FeedNewGroupDialog"),
         visible = feedOptionUiState.newGroupDialogVisible,
         title = stringResource(R.string.create_new_group),
         icon = Icons.Outlined.CreateNewFolder,
@@ -167,6 +171,7 @@ fun FeedOptionDrawer(
     )
 
     RenameDialog(
+        overlayTag = overlayTagName("RenameFeedDialog"),
         visible = feedOptionUiState.renameDialogVisible,
         value = feedOptionUiState.newName,
         onValueChange = {
@@ -183,6 +188,7 @@ fun FeedOptionDrawer(
     )
 
     ChangeUrlDialog(
+        overlayTag = overlayTagName("ChangeUrlDialog"),
         visible = feedOptionUiState.changeUrlDialogVisible,
         value = feedOptionUiState.newUrl,
         onValueChange = {

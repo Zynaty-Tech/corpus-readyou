@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.settings.color
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.optionKey
+import me.ash.reader.ui.qa.overlayTagName
 import android.content.Context
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -115,6 +118,7 @@ fun ColorAndStylePage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -122,7 +126,7 @@ fun ColorAndStylePage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.color_and_style), desc = "")
                 }
@@ -136,7 +140,7 @@ fun ColorAndStylePage(
                             .background(
                                 MaterialTheme.colorScheme.surfaceContainerLow
                             )
-                            .clickable { },
+                            .clickable { }.controlTag("Tap.Preview"),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -154,6 +158,7 @@ fun ColorAndStylePage(
                         onSelected = { radioButtonSelected = it },
                         itemRadioGroups = listOf(
                             BlockRadioGroupButtonItem(
+                                key = "wallpaper_colors",
                                 text = stringResource(R.string.wallpaper_colors),
                                 onClick = {},
                             ) {
@@ -172,6 +177,7 @@ fun ColorAndStylePage(
                                 )
                             },
                             BlockRadioGroupButtonItem(
+                                key = "basic_colors",
                                 text = stringResource(R.string.basic_colors),
                                 onClick = {},
                             ) {
@@ -192,18 +198,21 @@ fun ColorAndStylePage(
                         text = stringResource(R.string.appearance),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.DarkTheme"),
                         title = stringResource(R.string.dark_theme),
                         desc = darkTheme.toDesc(context),
                         separatedActions = true,
                         onClick = navigateToDarkTheme,
                     ) {
                         RYSwitch(
+                            modifier = Modifier.controlTag("Switch.isDarkTheme"),
                             activated = darkTheme.isDarkTheme()
                         ) {
                             darkThemeNot.put(context, scope)
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.fonts"),
                         title = stringResource(R.string.basic_fonts),
                         desc = fonts.toDesc(context),
                         onClick = { fontsDialogVisible = true },
@@ -216,14 +225,17 @@ fun ColorAndStylePage(
                         text = stringResource(R.string.style)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.FeedsPageStyle"),
                         title = stringResource(R.string.feeds_page),
                         onClick = navigateToFeedsPageStyle,
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.FlowPageStyle"),
                         title = stringResource(R.string.flow_page),
                         onClick = navigateToFlowPageStyle,
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.ReadingPageStyle"),
                         title = stringResource(R.string.reading_page),
                         onClick = navigateToReadingPageStyle,
                     ) {}
@@ -237,10 +249,12 @@ fun ColorAndStylePage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("FontsDialog"),
         visible = fontsDialogVisible,
         title = stringResource(R.string.basic_fonts),
         options = BasicFontsPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 style = TextStyle(fontFamily = it.asFontFamily(context)),
                 selected = it == fonts,
@@ -281,7 +295,7 @@ fun Palettes(
                     MaterialTheme.colorScheme.inverseOnSurface
                             onLight MaterialTheme.colorScheme.surfaceContainer,
                 )
-                .clickable {},
+                .clickable {}.controlTag("Tap.NoPalettes"),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -321,6 +335,7 @@ fun Palettes(
     }
 
     TextFieldDialog(
+        overlayTag = overlayTagName("AddDialog"),
         visible = addDialogVisible,
         title = stringResource(R.string.primary_color),
         icon = Icons.Outlined.Palette,
@@ -363,6 +378,7 @@ fun SelectableMiniPalette(
     ) {
         Surface(
             modifier = Modifier
+                .controlTag(if (isCustom) "Tap.CustomPalette" else "Tap.Palette")
                 .clickable { onClick() }
                 .padding(16.dp)
                 .size(48.dp),

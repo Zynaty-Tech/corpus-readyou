@@ -1,5 +1,7 @@
 package me.ash.reader.ui.page.settings.tips
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import android.Manifest
 import android.content.Intent
 import android.net.Uri
@@ -73,6 +75,7 @@ fun UpdateDialog(
     }
 
     RYDialog(
+        overlayTag = overlayTagName("UpdateDialog"),
         modifier = Modifier.heightIn(max = 400.dp),
         visible = updateUiState.updateDialogVisible,
         onDismissRequest = { updateViewModel.hideDialog() },
@@ -106,6 +109,7 @@ fun UpdateDialog(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.update"),
                 onClick = {
                     context.openURL("${context.getString(R.string.github_link)}/releases/latest", OpenLinkPreference.AutoPreferCustomTabs)
                     // Disable automatic updates in F-Droid
@@ -141,6 +145,7 @@ fun UpdateDialog(
         dismissButton = {
             if (downloadState !is Download.Progress) {
                 TextButton(
+                    modifier = Modifier.controlTag("Button.skip_this_version"),
                     onClick = {
                         SkipVersionNumberPreference.put(context, scope, newVersionNumber.toString())
                         updateViewModel.hideDialog()

@@ -1,5 +1,6 @@
 package me.ash.reader.ui.component.base
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.KeyboardActionHandler
 import androidx.compose.foundation.text.input.TextFieldLineLimits
@@ -327,7 +328,7 @@ private fun PasteButton(
                 }
             }
         },
-        modifier = modifier,
+        modifier = modifier.controlTag("Button.paste"),
     ) {
         Icon(
             imageVector = Icons.Rounded.ContentPaste,
@@ -343,7 +344,7 @@ fun ClearButton(
     modifier: Modifier = Modifier,
     tint: Color = LocalContentColor.current,
 ) {
-    IconButton(onClick = { state.clearText() }, modifier = modifier) {
+    IconButton(onClick = { state.clearText() }, modifier = modifier.controlTag("Button.clear")) {
         Icon(
             imageVector = Icons.Rounded.Close,
             contentDescription = stringResource(R.string.clear),
@@ -359,7 +360,7 @@ fun PasswordVisibilityButton(
     modifier: Modifier = Modifier,
     tint: Color = LocalContentColor.current,
 ) {
-    IconButton(onClick = { onValueChange(!showPassword) }, modifier = modifier) {
+    IconButton(onClick = { onValueChange(!showPassword) }, modifier = modifier.controlTag("Button.Visibility")) {
         Icon(
             imageVector =
                 if (showPassword) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff,

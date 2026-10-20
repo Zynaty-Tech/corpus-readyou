@@ -1,5 +1,6 @@
 package me.ash.reader.ui.component
 
+import me.ash.reader.ui.qa.controlTag
 import android.os.Build
 import android.view.SoundEffectConstants
 import androidx.compose.foundation.background
@@ -69,7 +70,9 @@ fun FilterBar(
             Spacer(modifier = Modifier.width(filterBarPadding))
             Filter.values.forEach { item ->
                 NavigationBarItem(
-                    modifier = Modifier.height(containerHeight),
+                    modifier = Modifier.height(containerHeight).controlTag(
+                        "Filter." + when { item.isStarred() -> "Starred"; item.isUnread() -> "Unread"; else -> "All" }
+                    ),
                     alwaysShowLabel = when (filterBarStyle) {
                         FlowFilterBarStylePreference.Icon.value -> false
                         FlowFilterBarStylePreference.IconLabel.value -> true

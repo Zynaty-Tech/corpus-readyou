@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.home.feeds.drawer.group
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
+import me.ash.reader.ui.qa.overlayRoot
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -76,6 +79,7 @@ fun AllAllowNotificationDialog(
         var enabled by remember { mutableStateOf(true) }
 
         AlertDialog(
+            modifier = Modifier.overlayRoot(overlayTagName("AllAllowNotificationDialog")),
             onDismissRequest = { groupOptionViewModel.hideAllAllowNotificationDialog() },
             confirmButton = {
                 ApplyButton(
@@ -103,12 +107,14 @@ fun AllAllowNotificationDialog(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     SingleChoiceItem(
+                        modifier = Modifier.controlTag("Option.disable"),
                         title = stringResource(R.string.disable),
                         selected = !enabled,
                     ) {
                         enabled = false
                     }
                     SingleChoiceItem(
+                        modifier = Modifier.controlTag("Option.enable"),
                         title = stringResource(R.string.enable),
                         description = stringResource(R.string.notifications_desc),
                         selected = enabled,
@@ -133,6 +139,7 @@ fun AllOpenInBrowserDialog(
         var enabled by remember { mutableStateOf(true) }
 
         AlertDialog(
+            modifier = Modifier.overlayRoot(overlayTagName("AllOpenInBrowserDialog")),
             onDismissRequest = { groupOptionViewModel.hideAllOpenInBrowserDialog() },
             confirmButton = {
                 ApplyButton(
@@ -160,12 +167,14 @@ fun AllOpenInBrowserDialog(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     SingleChoiceItem(
+                        modifier = Modifier.controlTag("Option.disable"),
                         title = stringResource(R.string.disable),
                         selected = !enabled,
                     ) {
                         enabled = false
                     }
                     SingleChoiceItem(
+                        modifier = Modifier.controlTag("Option.enable"),
                         title = stringResource(R.string.enable),
                         description = stringResource(R.string.open_in_browser_desc),
                         selected = enabled,
@@ -190,6 +199,7 @@ fun AllParseFullContentDialog(
         var enabled by remember { mutableStateOf(true) }
 
         AlertDialog(
+            modifier = Modifier.overlayRoot(overlayTagName("AllParseFullContentDialog")),
             onDismissRequest = { groupOptionViewModel.hideAllParseFullContentDialog() },
             confirmButton = {
                 ApplyButton(
@@ -219,12 +229,14 @@ fun AllParseFullContentDialog(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     SingleChoiceItem(
+                        modifier = Modifier.controlTag("Option.disable"),
                         title = stringResource(R.string.disable),
                         selected = !enabled,
                     ) {
                         enabled = false
                     }
                     SingleChoiceItem(
+                        modifier = Modifier.controlTag("Option.enable"),
                         title = stringResource(R.string.enable),
                         description = stringResource(R.string.parse_full_content_desc),
                         selected = enabled,
@@ -239,10 +251,10 @@ fun AllParseFullContentDialog(
 
 @Composable
 private fun ApplyButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Button(onClick = onClick, modifier = modifier) { Text(stringResource(R.string.apply)) }
+    Button(onClick = onClick, modifier = modifier.controlTag("Button.apply")) { Text(stringResource(R.string.apply)) }
 }
 
 @Composable
 private fun CancelButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    OutlinedButton(onClick = onClick, modifier = modifier) { Text(stringResource(R.string.cancel)) }
+    OutlinedButton(onClick = onClick, modifier = modifier.controlTag("Button.cancel")) { Text(stringResource(R.string.cancel)) }
 }

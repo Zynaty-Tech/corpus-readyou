@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.settings.color.feeds
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.optionKey
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -47,6 +50,7 @@ fun FeedsPageStylePage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -54,7 +58,7 @@ fun FeedsPageStylePage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.feeds_page), desc = "")
                 }
@@ -70,7 +74,7 @@ fun FeedsPageStylePage(
                                 MaterialTheme.colorScheme.inverseOnSurface
                                         onLight MaterialTheme.colorScheme.surface.copy(0.7f)
                             )
-                            .clickable { },
+                            .clickable { }.controlTag("Tap.Preview"),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -93,6 +97,7 @@ fun FeedsPageStylePage(
                         text = stringResource(R.string.top_bar)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.topBarTonalElevation"),
                         title = stringResource(R.string.tonal_elevation),
                         desc = "${topBarTonalElevation.value}dp",
                         onClick = {
@@ -110,12 +115,13 @@ fun FeedsPageStylePage(
                         text = stringResource(R.string.group_list)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.groupListExpand"),
                         title = stringResource(R.string.always_expand),
                         onClick = {
                             (!groupListExpand).put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = groupListExpand.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.groupListExpand"), activated = groupListExpand.value) {
                             (!groupListExpand).put(context, scope)
                         }
                     }
@@ -137,6 +143,7 @@ fun FeedsPageStylePage(
                         text = stringResource(R.string.filter_bar),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.filterBarStyle"),
                         title = stringResource(R.string.style),
                         desc = filterBarStyle.toDesc(context),
                         onClick = {
@@ -144,6 +151,7 @@ fun FeedsPageStylePage(
                         },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.filterBarPadding"),
                         title = stringResource(R.string.horizontal_padding),
                         desc = "${filterBarPadding}dp",
                         onClick = {
@@ -152,6 +160,7 @@ fun FeedsPageStylePage(
                         },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.filterBarTonalElevation"),
                         title = stringResource(R.string.tonal_elevation),
                         desc = "${filterBarTonalElevation.value}dp",
                         onClick = {
@@ -167,10 +176,12 @@ fun FeedsPageStylePage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("FilterBarStyleDialog"),
         visible = filterBarStyleDialogVisible,
         title = stringResource(R.string.style),
         options = FeedsFilterBarStylePreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = filterBarStyle == it,
             ) {
@@ -182,6 +193,7 @@ fun FeedsPageStylePage(
     }
 
     TextFieldDialog(
+        overlayTag = overlayTagName("FilterBarPaddingDialog"),
         visible = filterBarPaddingDialogVisible,
         title = stringResource(R.string.horizontal_padding),
         value = (filterBarPaddingValue ?: "").toString(),
@@ -199,10 +211,12 @@ fun FeedsPageStylePage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("FilterBarTonalElevationDialog"),
         visible = filterBarTonalElevationDialogVisible,
         title = stringResource(R.string.tonal_elevation),
         options = FeedsFilterBarTonalElevationPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == filterBarTonalElevation,
             ) {
@@ -214,10 +228,12 @@ fun FeedsPageStylePage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("TopBarTonalElevationDialog"),
         visible = topBarTonalElevationDialogVisible,
         title = stringResource(R.string.tonal_elevation),
         options = FeedsTopBarTonalElevationPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == topBarTonalElevation,
             ) {
@@ -233,6 +249,7 @@ fun FeedsPageStylePage(
         title = stringResource(R.string.tonal_elevation),
         options = FeedsGroupListTonalElevationPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == groupListTonalElevation,
             ) {

@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.flow
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -324,7 +325,7 @@ fun FlowPage(
                 ) {
                     LargeTopAppBar(
                         modifier =
-                            Modifier.clickable(
+                            Modifier.controlTag("Tap.TopBar").clickable(
                                 onClick = {
                                     scope.launch {
                                         if (listState.firstVisibleItemIndex != 0) {
@@ -368,6 +369,7 @@ fun FlowPage(
                         scrollBehavior = scrollBehavior,
                         navigationIcon = {
                             FeedbackIconButton(
+                                buttonModifier = Modifier.controlTag("Action.back"),
                                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                                 contentDescription = stringResource(R.string.back),
                                 tint = MaterialTheme.colorScheme.onSurface,
@@ -379,6 +381,7 @@ fun FlowPage(
                         actions = {
                             RYExtensibleVisibility(visible = !filterUiState.filter.isStarred()) {
                                 FeedbackIconButton(
+                                    buttonModifier = Modifier.controlTag("Action.mark_all_as_read"),
                                     imageVector = Icons.Rounded.DoneAll,
                                     contentDescription = stringResource(R.string.mark_all_as_read),
                                     tint =
@@ -405,6 +408,7 @@ fun FlowPage(
                                 }
                             }
                             FeedbackIconButton(
+                                buttonModifier = Modifier.controlTag("Action.search"),
                                 imageVector = Icons.Rounded.Search,
                                 contentDescription = stringResource(R.string.search),
                                 tint =
@@ -640,7 +644,7 @@ fun FlowPage(
                     Box(modifier = Modifier.fillMaxSize()) {
                         LazyColumn(
                             modifier =
-                                Modifier.pullToLoad(
+                                (Modifier.pullToLoad(
                                         state = pullToLoadState,
                                         enabled = true,
                                         contentOffsetY = { fraction ->
@@ -662,7 +666,7 @@ fun FlowPage(
                                     )
                                     .nestedScroll(scrollBehavior.nestedScrollConnection)
                                     .fillMaxSize()
-                                    .drawVerticalScrollIndicator(listState),
+                                    .drawVerticalScrollIndicator(listState)).controlTag("List"),
                             state = listState,
                         ) {
                             ArticleList(

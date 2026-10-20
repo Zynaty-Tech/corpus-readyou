@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.settings.color.flow
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -75,6 +76,7 @@ fun FlowPagePreview(
             },
             navigationIcon = {
                 FeedbackIconButton(
+                    buttonModifier = Modifier.controlTag("Action.back"),
                     imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                     contentDescription = stringResource(R.string.back),
                     tint = MaterialTheme.colorScheme.onSurface
@@ -82,11 +84,13 @@ fun FlowPagePreview(
             },
             actions = {
                 FeedbackIconButton(
+                    buttonModifier = Modifier.controlTag("Action.mark_all_as_read"),
                     imageVector = Icons.Rounded.DoneAll,
                     contentDescription = stringResource(R.string.mark_all_as_read),
                     tint = MaterialTheme.colorScheme.onSurface,
                 ) {}
                 FeedbackIconButton(
+                    buttonModifier = Modifier.controlTag("Action.search"),
                     imageVector = Icons.Rounded.Search,
                     contentDescription = stringResource(R.string.search),
                     tint = MaterialTheme.colorScheme.onSurface,

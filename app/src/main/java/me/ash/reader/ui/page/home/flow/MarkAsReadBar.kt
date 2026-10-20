@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.flow
 
+import me.ash.reader.ui.qa.controlTag
 import android.view.HapticFeedbackConstants
 import android.view.SoundEffectConstants
 import androidx.compose.animation.core.Animatable
@@ -43,24 +44,28 @@ fun MarkAsReadBar(
         MarkAsReadBarItem(
             modifier = Modifier.width(56.dp),
             text = stringResource(R.string.seven_days),
+            key = "SevenDays",
         ) {
             onItemClick(MarkAsReadConditions.SevenDays)
         }
         MarkAsReadBarItem(
             modifier = Modifier.width(56.dp),
             text = stringResource(R.string.three_days),
+            key = "ThreeDays",
         ) {
             onItemClick(MarkAsReadConditions.ThreeDays)
         }
         MarkAsReadBarItem(
             modifier = Modifier.width(56.dp),
             text = stringResource(R.string.one_day),
+            key = "OneDay",
         ) {
             onItemClick(MarkAsReadConditions.OneDay)
         }
         MarkAsReadBarItem(
             modifier = Modifier.weight(1f),
             text = stringResource(R.string.mark_all_as_read),
+            key = "All",
             isPrimary = true,
         ) {
             onItemClick(MarkAsReadConditions.All)
@@ -72,6 +77,8 @@ fun MarkAsReadBar(
 fun MarkAsReadBarItem(
     modifier: Modifier = Modifier,
     text: String,
+    /** The MarkAsReadConditions name (mqa control id `Tap.<key>`). */
+    key: String = "Item",
     isPrimary: Boolean = false,
     onClick: () -> Unit = {},
 ) {
@@ -81,6 +88,7 @@ fun MarkAsReadBarItem(
         modifier = modifier
             .height(56.dp)
             .clip(RoundedCornerShape(16.dp))
+            .controlTag("Tap.$key")
             .clickable {
                 view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                 view.playSoundEffect(SoundEffectConstants.CLICK)

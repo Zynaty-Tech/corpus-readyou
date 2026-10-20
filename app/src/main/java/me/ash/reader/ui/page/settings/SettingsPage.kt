@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.settings
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -63,6 +64,7 @@ fun SettingsPage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -70,7 +72,7 @@ fun SettingsPage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.settings), desc = "")
                 }
@@ -78,7 +80,7 @@ fun SettingsPage(
                     Box {
                         if (newVersion.whetherNeedUpdate(currentVersion, skipVersion)) {
                             Banner(
-                                modifier = Modifier.zIndex(1f),
+                                modifier = Modifier.zIndex(1f).controlTag("Tap.get_new_updates"),
                                 title = stringResource(R.string.get_new_updates),
                                 desc = stringResource(
                                     R.string.get_new_updates_desc,
@@ -105,6 +107,7 @@ fun SettingsPage(
                 }
                 item {
                     SelectableSettingGroupItem(
+                        modifier = Modifier.controlTag("Tap.Accounts"),
                         title = stringResource(R.string.accounts),
                         desc = stringResource(R.string.accounts_desc),
                         icon = Icons.Outlined.AccountCircle,
@@ -113,6 +116,7 @@ fun SettingsPage(
                 }
                 item {
                     SelectableSettingGroupItem(
+                        modifier = Modifier.controlTag("Tap.ColorAndStyle"),
                         title = stringResource(R.string.color_and_style),
                         desc = stringResource(R.string.color_and_style_desc),
                         icon = Icons.Outlined.Palette,
@@ -121,6 +125,7 @@ fun SettingsPage(
                 }
                 item {
                     SelectableSettingGroupItem(
+                        modifier = Modifier.controlTag("Tap.Interaction"),
                         title = stringResource(R.string.interaction),
                         desc = stringResource(R.string.interaction_desc),
                         icon = Icons.Outlined.TouchApp,
@@ -129,6 +134,7 @@ fun SettingsPage(
                 }
                 item {
                     SelectableSettingGroupItem(
+                        modifier = Modifier.controlTag("Tap.Languages"),
                         title = stringResource(R.string.languages),
                         desc = Locale.getDefault().toDisplayName(),
                         icon = Icons.Outlined.Language,
@@ -137,6 +143,7 @@ fun SettingsPage(
                 }
                 item {
                     SelectableSettingGroupItem(
+                        modifier = Modifier.controlTag("Tap.Troubleshooting"),
                         title = stringResource(R.string.troubleshooting),
                         desc = stringResource(R.string.troubleshooting_desc),
                         icon = Icons.Outlined.BugReport,
@@ -145,6 +152,7 @@ fun SettingsPage(
                 }
                 item {
                     SelectableSettingGroupItem(
+                        modifier = Modifier.controlTag("Tap.TipsAndSupport"),
                         title = stringResource(R.string.tips_and_support),
                         desc = stringResource(R.string.tips_and_support_desc),
                         icon = Icons.Outlined.TipsAndUpdates,

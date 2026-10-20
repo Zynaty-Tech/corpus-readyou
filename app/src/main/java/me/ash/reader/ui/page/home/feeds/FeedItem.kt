@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.feeds
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -48,6 +49,7 @@ private fun FeedItemImpl(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .controlTag("Row.Feed")
             .combinedClickable(onClick = {
                 onClick()
             }, onLongClick = {

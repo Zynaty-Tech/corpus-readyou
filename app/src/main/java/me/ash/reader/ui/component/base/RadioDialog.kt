@@ -1,5 +1,6 @@
 package me.ash.reader.ui.component.base
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,10 +32,12 @@ fun RadioDialog(
     title: String = "",
     description: String? = null,
     options: List<RadioDialogOption> = emptyList(),
+    overlayTag: String? = null,
     onDismissRequest: () -> Unit = {},
 ) {
     RYDialog(
         modifier = modifier,
+        overlayTag = overlayTag,
         visible = visible,
         onDismissRequest = onDismissRequest,
         title = {
@@ -58,7 +61,8 @@ fun RadioDialog(
                 items(options) { option ->
                     Row(
                         modifier =
-                            Modifier.fillMaxWidth()
+                            Modifier.controlTag("Option.${option.key ?: "Item"}")
+                                .fillMaxWidth()
                                 .clip(MaterialTheme.shapes.extraLarge)
                                 .selectable(selected = option.selected) {
                                     option.onClick()
@@ -93,6 +97,8 @@ fun RadioDialog(
 @Immutable
 data class RadioDialogOption(
     val text: String = "",
+    /** A stable, language-independent key of the option (mqa control id `Option.<key>`). */
+    val key: String? = null,
     val style: TextStyle? = null,
     val selected: Boolean = false,
     val onClick: () -> Unit = {},

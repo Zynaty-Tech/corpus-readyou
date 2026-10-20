@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.settings.color.reading
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.optionKey
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -85,6 +88,7 @@ fun ReadingTextPage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -92,7 +96,7 @@ fun ReadingTextPage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.text), desc = "")
                 }
@@ -108,7 +112,7 @@ fun ReadingTextPage(
                                 MaterialTheme.colorScheme.inverseOnSurface
                                         onLight MaterialTheme.colorScheme.surface.copy(0.7f)
                             )
-                            .clickable { },
+                            .clickable { }.controlTag("Tap.Preview"),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -124,38 +128,44 @@ fun ReadingTextPage(
                         text = stringResource(R.string.text)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.fontSize"),
                         title = stringResource(R.string.font_size),
                         desc = "${fontSize}sp",
                         onClick = { fontSizeDialogVisible = true },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.bold"),
                         title = stringResource(R.string.bold),
                         onClick = {
                             (!bold).put(context, scope)
                             ReadingThemePreference.Custom.put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = bold.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.bold"), activated = bold.value) {
                             (!bold).put(context, scope)
                             ReadingThemePreference.Custom.put(context, scope)
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.letterSpacing"),
                         title = stringResource(R.string.letter_spacing),
                         desc = "${letterSpacing}sp",
                         onClick = { letterSpacingDialogVisible = true },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.lineHeight"),
                         title = stringResource(R.string.line_height_multiple),
                         desc = lineHeightMultipleValue,
                         onClick = { lineHeightDialogVisible = true },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.horizontalPadding"),
                         title = stringResource(R.string.horizontal_padding),
                         desc = "${horizontalPadding}dp",
                         onClick = { horizontalPaddingDialogVisible = true },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.align"),
                         title = stringResource(R.string.alignment),
                         desc = align.toDesc(context),
                         onClick = { alignDialogVisible = true },
@@ -171,6 +181,7 @@ fun ReadingTextPage(
     )
 
     TextFieldDialog(
+        overlayTag = overlayTagName("FontSizeDialog"),
         visible = fontSizeDialogVisible,
         title = stringResource(R.string.font_size),
         value = (fontSizeValue ?: "").toString(),
@@ -189,6 +200,7 @@ fun ReadingTextPage(
     )
 
     TextFieldDialog(
+        overlayTag = overlayTagName("LineHeightDialog"),
         visible = lineHeightDialogVisible,
         title = stringResource(R.string.line_height_multiple),
         value = lineHeightMultipleValue,
@@ -212,6 +224,7 @@ fun ReadingTextPage(
     )
 
     TextFieldDialog(
+        overlayTag = overlayTagName("LetterSpacingDialog"),
         visible = letterSpacingDialogVisible,
         title = stringResource(R.string.letter_spacing),
         value = (letterSpacingValue ?: "").toString(),
@@ -234,6 +247,7 @@ fun ReadingTextPage(
     )
 
     TextFieldDialog(
+        overlayTag = overlayTagName("HorizontalPaddingDialog"),
         visible = horizontalPaddingDialogVisible,
         title = stringResource(R.string.horizontal_padding),
         value = (horizontalPaddingValue ?: "").toString(),
@@ -252,10 +266,12 @@ fun ReadingTextPage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("AlignDialog"),
         visible = alignDialogVisible,
         title = stringResource(R.string.alignment),
         options = ReadingTextAlignPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == align,
             ) {

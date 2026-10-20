@@ -1,5 +1,8 @@
 package me.ash.reader.ui.component.base
 
+import me.ash.reader.ui.qa.ControlPrefix
+import me.ash.reader.ui.qa.overlayRoot
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,6 +13,7 @@ fun RYDialog(
     modifier: Modifier = Modifier,
     visible: Boolean,
     properties: DialogProperties = DialogProperties(),
+    overlayTag: String? = null,
     onDismissRequest: () -> Unit = {},
     icon: @Composable (() -> Unit)? = null,
     title: @Composable (() -> Unit)? = null,
@@ -18,15 +22,17 @@ fun RYDialog(
     dismissButton: @Composable (() -> Unit)? = null,
 ) {
     if (visible) {
+        // mqa: the dialog window is its own root: expose tags, tag it, and name its controls after it
+        val tag = overlayTag ?: overlayTagName("Dialog")
         AlertDialog(
             properties = properties,
-            modifier = modifier,
+            modifier = modifier.overlayRoot(tag),
             onDismissRequest = onDismissRequest,
-            icon = icon,
-            title = title,
-            text = text,
-            confirmButton = confirmButton,
-            dismissButton = dismissButton,
+            icon = icon?.let { c -> { ControlPrefix(tag) { c() } } },
+            title = title?.let { c -> { ControlPrefix(tag) { c() } } },
+            text = text?.let { c -> { ControlPrefix(tag) { c() } } },
+            confirmButton = { ControlPrefix(tag) { confirmButton() } },
+            dismissButton = dismissButton?.let { c -> { ControlPrefix(tag) { c() } } },
         )
     }
 }

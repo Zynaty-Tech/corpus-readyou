@@ -1,5 +1,8 @@
 package me.ash.reader.ui.widget
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.screenTag
+import me.ash.reader.ui.qa.exposeTestTags
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
@@ -105,9 +108,10 @@ class WidgetConfigActivity : ComponentActivity() {
 
                     Scaffold(
                         containerColor = MaterialTheme.colorScheme.surface,
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.exposeTestTags().screenTag("WidgetConfig").fillMaxSize(),
                         floatingActionButton = {
                             MediumFloatingActionButton(
+                                modifier = Modifier.controlTag("Button.done"),
                                 shape = CircleShape,
                                 elevation = FloatingActionButtonDefaults.loweredElevation(),
                                 containerColor = MaterialTheme.colorScheme.primaryFixed,
