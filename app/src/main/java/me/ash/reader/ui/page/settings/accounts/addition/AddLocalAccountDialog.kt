@@ -1,5 +1,7 @@
 package me.ash.reader.ui.page.settings.accounts.addition
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -71,6 +73,7 @@ fun AddLocalAccountDialog(
     }
 
     RYDialog(
+        overlayTag = overlayTagName("AddLocalAccountDialog"),
         modifier = Modifier.padding(horizontal = 44.dp),
         visible = uiState.addLocalAccountDialogVisible,
         properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -116,6 +119,7 @@ fun AddLocalAccountDialog(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.add"),
                 enabled = !accountUiState.isLoading && nameState.text.isNotBlank(),
                 onClick = {
                     focusManager.clearFocus()
@@ -127,6 +131,7 @@ fun AddLocalAccountDialog(
         },
         dismissButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.cancel"),
                 onClick = {
                     focusManager.clearFocus()
                     accountViewModel.cancelAdd()

@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.settings.color.reading
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -37,6 +38,7 @@ fun ReadingVideoPage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -44,7 +46,7 @@ fun ReadingVideoPage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.videos), desc = "")
                 }
@@ -64,7 +66,7 @@ fun ReadingVideoPage(
                                 MaterialTheme.colorScheme.inverseOnSurface
                                         onLight MaterialTheme.colorScheme.surface.copy(0.7f)
                             )
-                            .clickable { },
+                            .clickable { }.controlTag("Tap.Preview"),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -80,10 +82,12 @@ fun ReadingVideoPage(
                         text = stringResource(R.string.videos)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.rounded_corners"),
                         title = stringResource(R.string.rounded_corners),
                         onClick = {},
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.horizontal_padding"),
                         title = stringResource(R.string.horizontal_padding),
                         desc = "dp",
                         onClick = {},

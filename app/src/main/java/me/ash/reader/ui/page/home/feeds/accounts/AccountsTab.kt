@@ -1,5 +1,7 @@
 package me.ash.reader.ui.page.home.feeds.accounts
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -46,6 +48,7 @@ fun AccountsTab(
     onDismissRequest: () -> Unit = {},
 ) {
     RYDialog(
+        overlayTag = overlayTagName("AccountsDialog"),
         modifier = modifier,
         visible = visible,
         onDismissRequest = onDismissRequest,
@@ -65,6 +68,7 @@ fun AccountsTab(
                                 .clickable {
                                     if (selected) onClickSettings() else onAccountSwitch(account)
                                 }
+                                .controlTag(if (selected) "Row.CurrentAccount" else "Row.Account")
                                 .padding(8.dp)
                     ) {
                         IconContainer(selected = selected) {
@@ -78,6 +82,7 @@ fun AccountsTab(
                         Modifier
                             .clip(MaterialTheme.shapes.medium)
                             .clickable(onClick = onClickManage)
+                            .controlTag("Tap.Add")
                             .padding(8.dp)
                 ) {
                     IconContainer(selected = false) {

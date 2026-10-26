@@ -1,5 +1,7 @@
 package me.ash.reader.ui.page.settings.troubleshooting
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import android.content.ClipData
 import android.content.Context
 import android.net.Uri
@@ -120,6 +122,7 @@ fun TroubleshootingPage(onBack: () -> Unit, viewModel: TroubleshootingViewModel 
             MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -127,11 +130,12 @@ fun TroubleshootingPage(onBack: () -> Unit, viewModel: TroubleshootingViewModel 
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.troubleshooting), desc = "")
                     Spacer(modifier = Modifier.height(16.dp))
                     Banner(
+                        modifier = Modifier.controlTag("Tap.bug_report"),
                         title = stringResource(R.string.bug_report),
                         icon = Icons.Outlined.Info,
                         action = {
@@ -155,10 +159,12 @@ fun TroubleshootingPage(onBack: () -> Unit, viewModel: TroubleshootingViewModel 
                         text = stringResource(R.string.app_preferences),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.import_from_json"),
                         title = stringResource(R.string.import_from_json),
                         onClick = { importLauncher.launch(arrayOf(MimeType.ANY)) },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.export_as_json"),
                         title = stringResource(R.string.export_as_json),
                         onClick = { preferenceFileLauncher(context, exportLauncher) },
                     ) {}
@@ -191,7 +197,7 @@ fun TroubleshootingPage(onBack: () -> Unit, viewModel: TroubleshootingViewModel 
                     items(syncLogList) { SyncLogItem(log = it) }
                     item {
                         Button(
-                            modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp),
+                            modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp).controlTag("Button.clear"),
                             onClick = {
                                 viewModel.clearSyncLogs()
                                 syncLogList.clear()
@@ -215,6 +221,7 @@ fun TroubleshootingPage(onBack: () -> Unit, viewModel: TroubleshootingViewModel 
     )
 
     RYDialog(
+        overlayTag = overlayTagName("WarningDialog"),
         visible = uiState.warningDialogVisible,
         onDismissRequest = { viewModel.hideWarningDialog() },
         icon = {
@@ -227,6 +234,7 @@ fun TroubleshootingPage(onBack: () -> Unit, viewModel: TroubleshootingViewModel 
         text = { Text(text = stringResource(R.string.invalid_json_file_warning)) },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.confirm"),
                 onClick = {
                     viewModel.hideWarningDialog()
                     viewModel.importPreferencesFromJSON(context, byteArray)
@@ -236,7 +244,7 @@ fun TroubleshootingPage(onBack: () -> Unit, viewModel: TroubleshootingViewModel 
             }
         },
         dismissButton = {
-            TextButton(onClick = { viewModel.hideWarningDialog() }) {
+            TextButton(modifier = Modifier.controlTag("Button.cancel"), onClick = { viewModel.hideWarningDialog() }) {
                 Text(text = stringResource(R.string.cancel))
             }
         },
@@ -280,6 +288,7 @@ fun SyncLogItem(log: Log, modifier: Modifier = Modifier) {
         modifier =
             modifier
                 .fillMaxWidth()
+                .controlTag("Row.SyncLog")
                 .clickable {
                     scope.launch {
                         clipboard.setClipEntry(

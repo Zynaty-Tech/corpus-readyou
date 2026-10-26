@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.reading
 
+import me.ash.reader.ui.qa.controlTag
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
@@ -96,7 +97,7 @@ fun BottomBar(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         CanBeDisabledIconButton(
-                            modifier = Modifier.size(40.dp),
+                            modifier = Modifier.size(40.dp).controlTag("Action.ToggleRead"),
                             disabled = false,
                             imageVector = if (isUnread) {
                                 Icons.Filled.FiberManualRecord
@@ -114,7 +115,7 @@ fun BottomBar(
                             onUnread(!isUnread)
                         }
                         CanBeDisabledIconButton(
-                            modifier = Modifier.size(40.dp),
+                            modifier = Modifier.size(40.dp).controlTag("Action.ToggleStarred"),
                             disabled = false,
                             imageVector = if (isStarred) {
                                 Icons.Rounded.Star
@@ -133,7 +134,7 @@ fun BottomBar(
                         }
                         CanBeDisabledIconButton(
                             disabled = !isNextArticleAvailable,
-                            modifier = Modifier.size(40.dp),
+                            modifier = Modifier.size(40.dp).controlTag("Action.NextArticle"),
                             imageVector = Icons.Rounded.ExpandMore,
                             contentDescription = "Next Article",
                             tint = MaterialTheme.colorScheme.outline,
@@ -144,7 +145,7 @@ fun BottomBar(
                         ttsButton()
                         CanBeDisabledIconButton(
                             disabled = false,
-                            modifier = Modifier.size(40.dp),
+                            modifier = Modifier.size(40.dp).controlTag("Action.parse_full_content"),
                             imageVector = if (isFullContent) {
                                 Icons.AutoMirrored.Rounded.Article
                             } else {

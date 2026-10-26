@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.home.feeds.drawer.group
 
+import androidx.compose.ui.Modifier
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.material3.Icon
@@ -27,6 +30,7 @@ fun ClearGroupDialog(
     val toastString = stringResource(R.string.clear_articles_in_group_toast, groupName)
 
     RYDialog(
+        overlayTag = overlayTagName("ClearGroupDialog"),
         visible = groupOptionUiState.clearDialogVisible,
         onDismissRequest = {
             groupOptionViewModel.hideClearDialog()
@@ -45,6 +49,7 @@ fun ClearGroupDialog(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.clear"),
                 onClick = {
                     groupOptionViewModel.clear {
                         groupOptionViewModel.hideClearDialog()
@@ -60,6 +65,7 @@ fun ClearGroupDialog(
         },
         dismissButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.cancel"),
                 onClick = {
                     groupOptionViewModel.hideClearDialog()
                 }

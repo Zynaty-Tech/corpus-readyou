@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.settings.accounts.connection
 
+import androidx.compose.ui.Modifier
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import android.app.Activity
 import android.security.KeyChain
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -43,21 +46,25 @@ fun LazyItemScope.GoogleReaderConnection(
     LaunchedEffect(securityKey.password) { passwordMask = securityKey.password?.mask() }
 
     SettingItem(
+        modifier = Modifier.controlTag("Tap.serverUrl"),
         title = stringResource(R.string.server_url),
         desc = securityKey.serverUrl ?: "",
         onClick = { serverUrlDialogVisible = true },
     ) {}
     SettingItem(
+        modifier = Modifier.controlTag("Tap.username"),
         title = stringResource(R.string.username),
         desc = securityKey.username ?: "",
         onClick = { usernameDialogVisible = true },
     ) {}
     SettingItem(
+        modifier = Modifier.controlTag("Tap.password"),
         title = stringResource(R.string.password),
         desc = passwordMask,
         onClick = { passwordDialogVisible = true },
     ) {}
     SettingItem(
+        modifier = Modifier.controlTag("Tap.client_certificate"),
         title = stringResource(R.string.client_certificate),
         desc = securityKey.clientCertificateAlias,
         onClick = {
@@ -76,6 +83,7 @@ fun LazyItemScope.GoogleReaderConnection(
     ) {}
 
     TextFieldDialog(
+        overlayTag = overlayTagName("ServerUrlDialog"),
         visible = serverUrlDialogVisible,
         title = stringResource(R.string.server_url),
         value = serverUrlValue ?: "",
@@ -92,6 +100,7 @@ fun LazyItemScope.GoogleReaderConnection(
     )
 
     TextFieldDialog(
+        overlayTag = overlayTagName("UsernameDialog"),
         visible = usernameDialogVisible,
         title = stringResource(R.string.username),
         value = usernameValue ?: "",
@@ -107,6 +116,7 @@ fun LazyItemScope.GoogleReaderConnection(
     )
 
     TextFieldDialog(
+        overlayTag = overlayTagName("PasswordDialog"),
         visible = passwordDialogVisible,
         title = stringResource(R.string.password),
         value = passwordValue ?: "",

@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.settings.accounts
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,6 +38,7 @@ fun AddAccountsPage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -44,7 +46,7 @@ fun AddAccountsPage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.add_accounts), desc = "")
                     Spacer(modifier = Modifier.height(16.dp))
@@ -55,6 +57,7 @@ fun AddAccountsPage(
                         text = stringResource(R.string.local),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.AddLocalAccount"),
                         title = stringResource(R.string.local),
                         desc = stringResource(R.string.local_desc),
                         icon = Icons.Rounded.RssFeed,
@@ -91,6 +94,7 @@ fun AddAccountsPage(
                         text = stringResource(R.string.self_hosted),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.AddFreshRSSAccount"),
                         title = stringResource(R.string.fresh_rss),
                         desc = stringResource(R.string.fresh_rss_desc),
                         iconPainter = painterResource(id = R.drawable.ic_freshrss),
@@ -99,6 +103,7 @@ fun AddAccountsPage(
                         },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.AddGoogleReaderAccount"),
                         title = stringResource(R.string.google_reader),
                         desc = stringResource(R.string.google_reader_desc),
                         icon = Icons.Rounded.RssFeed,
@@ -107,6 +112,7 @@ fun AddAccountsPage(
                         },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.AddFeverAccount"),
                         title = stringResource(R.string.fever),
                         desc = stringResource(R.string.fever_desc),
                         iconPainter = painterResource(id = R.drawable.ic_fever),

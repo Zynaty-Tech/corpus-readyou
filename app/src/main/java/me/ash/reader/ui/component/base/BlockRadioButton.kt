@@ -1,5 +1,6 @@
 package me.ash.reader.ui.component.base
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,6 +24,7 @@ fun BlockRadioButton(
             itemRadioGroups.forEachIndexed { index, item ->
                 BlockButton(
                     modifier = Modifier
+                        .controlTag("Tab.${item.key ?: "Item"}")
                         .weight(1f)
                         .padding(end = if (item == itemRadioGroups.last()) 0.dp else 8.dp),
                     text = item.text,
@@ -39,6 +41,8 @@ fun BlockRadioButton(
 }
 
 data class BlockRadioGroupButtonItem(
+    /** A stable key of the tab (mqa control id `Tab.<key>`), never visible text. */
+    val key: String? = null,
     val text: String,
     val onClick: () -> Unit = {},
     val content: @Composable () -> Unit,

@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.settings.accounts.addition
 
+import me.ash.reader.ui.qa.controlTag
 import android.app.Activity
 import android.security.KeyChain
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,7 +34,7 @@ fun CertificateSelector(
         onValueChange = {},
         readOnly = true,
         trailingIcon = {
-            IconButton(onClick = {
+            IconButton(modifier = Modifier.controlTag("Button.Key"), onClick = {
                 KeyChain.choosePrivateKeyAlias(
                     context.findActivity() ?: context as Activity,
                     { alias ->

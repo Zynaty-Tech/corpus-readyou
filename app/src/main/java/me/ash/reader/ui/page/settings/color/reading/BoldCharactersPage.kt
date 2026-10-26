@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.settings.color.reading
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -52,6 +53,7 @@ fun BoldCharactersPage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -59,7 +61,7 @@ fun BoldCharactersPage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.bold_characters), desc = "")
                 }
@@ -87,10 +89,10 @@ fun BoldCharactersPage(
 
                 item {
                     Banner(
-                        modifier = Modifier.padding(horizontal = 8.dp),
+                        modifier = Modifier.padding(horizontal = 8.dp).controlTag("Tap.boldCharacters"),
                         title = stringResource(R.string.use_bold_characters),
                         action = {
-                            RYSwitch(activated = boldCharacters.value) {
+                            RYSwitch(modifier = Modifier.controlTag("Switch.boldCharacters"), activated = boldCharacters.value) {
                                 (!boldCharacters).put(context, scope)
                             }
                         },

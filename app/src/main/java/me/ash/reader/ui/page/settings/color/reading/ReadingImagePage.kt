@@ -1,5 +1,7 @@
 package me.ash.reader.ui.page.settings.color.reading
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
@@ -63,6 +65,7 @@ fun ReadingImagePage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -70,7 +73,7 @@ fun ReadingImagePage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.images), desc = "")
                 }
@@ -112,17 +115,20 @@ fun ReadingImagePage(
                         text = stringResource(R.string.images)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.roundedCorners"),
                         title = stringResource(R.string.rounded_corners),
                         desc = "${roundedCorners}dp",
                         onClick = { roundedCornersDialogVisible = true },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.horizontalPadding"),
                         enabled = renderer == ReadingRendererPreference.NativeComponent,
                         title = stringResource(R.string.horizontal_padding),
                         desc = "${horizontalPadding}dp",
                         onClick = { horizontalPaddingDialogVisible = true },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.maximize"),
                         enabled = renderer == ReadingRendererPreference.NativeComponent,
                         title = stringResource(R.string.maximize),
                         onClick = {
@@ -130,7 +136,7 @@ fun ReadingImagePage(
                             ReadingThemePreference.Custom.put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = maximize.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.maximize"), activated = maximize.value) {
                             (!maximize).put(context, scope)
                             ReadingThemePreference.Custom.put(context, scope)
                         }
@@ -146,6 +152,7 @@ fun ReadingImagePage(
     )
 
     TextFieldDialog(
+        overlayTag = overlayTagName("RoundedCornersDialog"),
         visible = roundedCornersDialogVisible,
         title = stringResource(R.string.rounded_corners),
         value = (roundedCornersValue ?: "").toString(),
@@ -164,6 +171,7 @@ fun ReadingImagePage(
     )
 
     TextFieldDialog(
+        overlayTag = overlayTagName("HorizontalPaddingDialog"),
         visible = horizontalPaddingDialogVisible,
         title = stringResource(R.string.horizontal_padding),
         value = (horizontalPaddingValue ?: "").toString(),

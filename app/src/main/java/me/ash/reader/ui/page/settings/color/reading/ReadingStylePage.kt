@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.settings.color.reading
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.optionKey
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -105,6 +108,7 @@ fun ReadingStylePage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -112,7 +116,7 @@ fun ReadingStylePage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.reading_page), desc = "")
                 }
@@ -146,7 +150,7 @@ fun ReadingStylePage(
                                 MaterialTheme.colorScheme.inverseOnSurface
                                         onLight MaterialTheme.colorScheme.surface.copy(0.7f)
                             )
-                            .clickable { },
+                            .clickable { }.controlTag("Tap.Preview"),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -162,11 +166,13 @@ fun ReadingStylePage(
                         text = stringResource(R.string.general)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.renderer"),
                         title = stringResource(R.string.content_renderer),
                         desc = renderer.toDesc(context),
                         onClick = { rendererDialogVisible = true },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.ReadingBoldCharacters"),
                         title = stringResource(R.string.bold_characters),
                         separatedActions = renderer == ReadingRendererPreference.WebView,
                         enabled = renderer == ReadingRendererPreference.WebView,
@@ -176,6 +182,7 @@ fun ReadingStylePage(
                     ) {
                         if (renderer == ReadingRendererPreference.WebView) {
                             RYSwitch(
+                                modifier = Modifier.controlTag("Switch.boldCharacters"),
                                 enable = renderer == ReadingRendererPreference.WebView,
                                 activated = boldCharacters.value,
                             ) {
@@ -184,30 +191,34 @@ fun ReadingStylePage(
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.fonts"),
                         title = stringResource(R.string.reading_fonts),
                         desc = fonts.toDesc(context),
                         onClick = { fontsDialogVisible = true },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.autoHideToolbar"),
                         title = stringResource(R.string.auto_hide_toolbars),
                         onClick = {
                             (!autoHideToolbar).put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = autoHideToolbar.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.autoHideToolbar"), activated = autoHideToolbar.value) {
                             (!autoHideToolbar).put(context, scope)
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.rearrange_buttons"),
                         title = stringResource(R.string.rearrange_buttons),
                         enabled = false,
                         onClick = {},
                     ) {}
 
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.pullToSwitchArticle"),
                         title = stringResource(id = R.string.pull_to_switch_article),
                         onClick = { pullToSwitchArticle.toggle(context, scope) }) {
-                        RYSwitch(activated = pullToSwitchArticle.value, onClick = {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.pullToSwitchArticle"), activated = pullToSwitchArticle.value, onClick = {
                             pullToSwitchArticle.toggle(context, scope)
                         })
                     }
@@ -216,6 +227,7 @@ fun ReadingStylePage(
                         text = stringResource(R.string.toolbars)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.tonalElevation"),
                         title = stringResource(R.string.tonal_elevation),
                         desc = "${tonalElevation.value}dp",
                         onClick = {
@@ -233,24 +245,28 @@ fun ReadingStylePage(
                         text = stringResource(R.string.advanced)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.ReadingPageTitle"),
                         title = stringResource(R.string.title),
                         desc = stringResource(R.string.title_desc),
                         icon = Icons.Rounded.Title,
                         onClick = navigateToReadingPageTitle,
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.ReadingPageText"),
                         title = stringResource(R.string.text),
                         desc = stringResource(R.string.text_desc),
                         icon = Icons.AutoMirrored.Rounded.Segment,
                         onClick = navigateToReadingPageText,
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.ReadingPageImage"),
                         title = stringResource(R.string.images),
                         desc = stringResource(R.string.images_desc),
                         icon = Icons.Outlined.Image,
                         onClick = navigateToReadingPageImage,
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.ReadingPageVideo"),
                         title = stringResource(R.string.videos),
                         desc = stringResource(R.string.videos_desc),
                         icon = Icons.Outlined.Movie,
@@ -268,10 +284,12 @@ fun ReadingStylePage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("TonalElevationDialog"),
         visible = tonalElevationDialogVisible,
         title = stringResource(R.string.tonal_elevation),
         options = ReadingPageTonalElevationPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == tonalElevation,
             ) {
@@ -283,10 +301,12 @@ fun ReadingStylePage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("RendererDialog"),
         visible = rendererDialogVisible,
         title = stringResource(R.string.content_renderer),
         options = ReadingRendererPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == renderer,
             ) {
@@ -298,10 +318,12 @@ fun ReadingStylePage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("FontsDialog"),
         visible = fontsDialogVisible,
         title = stringResource(R.string.reading_fonts),
         options = ReadingFontsPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 style = TextStyle(fontFamily = it.asFontFamily(context)),
                 selected = it == fonts,

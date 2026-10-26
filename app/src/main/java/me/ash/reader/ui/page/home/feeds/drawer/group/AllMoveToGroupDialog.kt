@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.home.feeds.drawer.group
 
+import androidx.compose.ui.Modifier
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.DriveFileMove
 import androidx.compose.material3.Icon
@@ -30,6 +33,7 @@ fun AllMoveToGroupDialog(
     )
 
     RYDialog(
+        overlayTag = overlayTagName("AllMoveToGroupDialog"),
         visible = groupOptionUiState.allMoveToGroupDialogVisible,
         onDismissRequest = {
             groupOptionViewModel.hideAllMoveToGroupDialog()
@@ -54,6 +58,7 @@ fun AllMoveToGroupDialog(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.confirm"),
                 onClick = {
                     groupOptionViewModel.allMoveToGroup {
                         groupOptionViewModel.hideAllMoveToGroupDialog()
@@ -69,6 +74,7 @@ fun AllMoveToGroupDialog(
         },
         dismissButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.cancel"),
                 onClick = {
                     groupOptionViewModel.hideAllMoveToGroupDialog()
                 }

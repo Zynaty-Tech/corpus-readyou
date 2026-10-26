@@ -1,5 +1,8 @@
 package me.ash.reader.infrastructure.android
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.screenTag
+import me.ash.reader.ui.qa.exposeTestTags
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -122,7 +125,7 @@ fun CrashReportPage(
 ) {
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.exposeTestTags().screenTag("CrashReport").fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         bottomBar = {}) {
         Column(
@@ -179,7 +182,7 @@ fun CrashReportPage(
                 Button(
                     onClick = onClick,
                     modifier = Modifier
-                        .padding(),
+                        .padding().controlTag("Button.copy_error_report"),
                     contentPadding = ButtonDefaults.ButtonWithIconContentPadding
                 ) {
                     Icon(

@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.home.feeds.drawer.group
 
+import androidx.compose.ui.Modifier
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material3.Icon
@@ -27,6 +30,7 @@ fun DeleteGroupDialog(
     val toastString = stringResource(R.string.delete_toast, groupName)
 
     RYDialog(
+        overlayTag = overlayTagName("DeleteGroupDialog"),
         visible = groupOptionUiState.deleteDialogVisible,
         onDismissRequest = {
             groupOptionViewModel.hideDeleteDialog()
@@ -45,6 +49,7 @@ fun DeleteGroupDialog(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.delete"),
                 onClick = {
                     groupOptionViewModel.delete {
                         groupOptionViewModel.hideDeleteDialog()
@@ -60,6 +65,7 @@ fun DeleteGroupDialog(
         },
         dismissButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.cancel"),
                 onClick = {
                     groupOptionViewModel.hideDeleteDialog()
                 }

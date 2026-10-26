@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.flow
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -39,6 +40,7 @@ fun ScrollToLastReadFab(visible: Boolean, modifier: Modifier = Modifier, onClick
         modifier = modifier.padding(bottom = 12.dp)
     ) {
         FloatingActionButton(
+            modifier = Modifier.controlTag("Button.ArrowDownward"),
             onClick = onClick,
             shape = CircleShape,
             elevation = FloatingActionButtonDefaults.loweredElevation(),
@@ -69,6 +71,7 @@ fun ScrollToTopFab(visible: Boolean, modifier: Modifier = Modifier, onClick: () 
         modifier = modifier.padding(bottom = 12.dp)
     ) {
         FloatingActionButton(
+            modifier = Modifier.controlTag("Button.ArrowUpward"),
             onClick = onClick,
             shape = CircleShape,
             elevation = FloatingActionButtonDefaults.loweredElevation(),

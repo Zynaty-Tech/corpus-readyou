@@ -1,5 +1,7 @@
 package me.ash.reader.ui.component
 
+import me.ash.reader.ui.qa.optionKey
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -50,6 +52,7 @@ fun ReadingThemePrev(
                 color = MaterialTheme.colorScheme.primary,
                 shape = Shape24
             )
+            .controlTag("Option.${optionKey(theme)}")
             .clickable(onClick = onClick),
         horizontalAlignment = when (theme) {
             ReadingThemePreference.MaterialYou -> Alignment.Start

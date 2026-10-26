@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.reading
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
@@ -94,7 +95,7 @@ fun TopBar(
                     modifier =
                         if (onClick == null) Modifier
                         else
-                            Modifier.clickable(
+                            Modifier.controlTag("Tap.TopBar").clickable(
                                 onClick = onClick,
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() },
@@ -114,6 +115,7 @@ fun TopBar(
                                 NavigationAction.ExpandList -> "Expand list"
                             }
                         FeedbackIconButton(
+                            buttonModifier = Modifier.controlTag("Action.$navigationAction"),
                             imageVector = imageVector,
                             contentDescription = contentDescription,
                             tint = MaterialTheme.colorScheme.onSurface,
@@ -123,6 +125,7 @@ fun TopBar(
                     },
                     actions = {
                         FeedbackIconButton(
+                            buttonModifier = Modifier.controlTag("Action.style"),
                             modifier = Modifier.size(22.dp),
                             imageVector = Icons.Outlined.Palette,
                             contentDescription = stringResource(R.string.style),
@@ -131,6 +134,7 @@ fun TopBar(
                             onNavigateToStylePage()
                         }
                         FeedbackIconButton(
+                            buttonModifier = Modifier.controlTag("Action.share"),
                             modifier = Modifier.size(20.dp),
                             imageVector = Icons.Outlined.Share,
                             contentDescription = stringResource(R.string.share),

@@ -43,6 +43,7 @@ import me.ash.reader.ui.component.reader.LocalTextContentWidth
 import me.ash.reader.ui.component.reader.MediumContentWidth
 import me.ash.reader.ui.page.home.flow.FlowPage
 import me.ash.reader.ui.page.home.reading.ReadingPage
+import me.ash.reader.ui.qa.TaggedScreen
 import timber.log.Timber
 
 @Parcelize data class ArticleData(val articleId: String, val listIndex: Int? = null) : Parcelable
@@ -117,6 +118,9 @@ fun ArticleListReaderPage(
     val animatedContentWidth by animateDpAsState(contentWidth)
     val animatedListAlpha by animateFloatAsState(listAlpha)
 
+    // mqa: only the focused pane carries its screen tag, so two panes never show two tags at once
+    val detailFocused = navigator.currentDestination?.pane == ListDetailPaneScaffoldRole.Detail
+
     NavigableListDetailPaneScaffold(
         navigator = navigator,
         modifier = modifier,
@@ -138,7 +142,7 @@ fun ArticleListReaderPage(
                     LocalBackgroundTextMeasurementExecutor provides
                         Executors.newSingleThreadExecutor()
                 ) {
-                    Box(modifier = Modifier.alpha(animatedListAlpha)) {
+                    TaggedScreen("Flow", enabled = !detailFocused, modifier = Modifier.alpha(animatedListAlpha)) {
                         FlowPage(
                             sharedTransitionScope = sharedTransitionScope,
                             animatedVisibilityScope = animatedVisibilityScope,
@@ -177,6 +181,7 @@ fun ArticleListReaderPage(
                 }
 
                 CompositionLocalProvider(LocalTextContentWidth provides animatedContentWidth) {
+                  TaggedScreen("Reading", enabled = detailFocused) {
                     ReadingPage(
                         viewModel = viewModel,
                         navigationAction = navigationAction,
@@ -213,6 +218,7 @@ fun ArticleListReaderPage(
                         },
                         onNavigateToStylePage = onNavigateToStylePage,
                     )
+                  }
                 }
             }
         },

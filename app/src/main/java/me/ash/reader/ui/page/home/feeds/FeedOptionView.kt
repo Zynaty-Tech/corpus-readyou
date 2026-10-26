@@ -1,5 +1,6 @@
 package me.ash.reader.ui.page.home.feeds
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.FlowRow
@@ -89,7 +90,7 @@ private fun EditableUrl(text: String, onClick: () -> Unit, onLongClick: () -> Un
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
         Text(
             modifier =
-                Modifier.clip(MaterialTheme.shapes.small)
+                Modifier.controlTag("Tap.FeedUrl").clip(MaterialTheme.shapes.small)
                     .combinedClickable(onClick = onClick, onLongClick = onLongClick)
                     .padding(horizontal = 4.dp, vertical = 2.dp),
             text = text,
@@ -120,7 +121,7 @@ private fun Preset(
     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start)) {
         item {
             RYSelectionChip(
-                modifier = Modifier,
+                modifier = Modifier.controlTag("Chip.parse_full_content"),
                 content = stringResource(R.string.parse_full_content),
                 selected = selectedParseFullContentPreset,
                 selectedIcon = {
@@ -137,7 +138,7 @@ private fun Preset(
         }
         item {
             RYSelectionChip(
-                modifier = Modifier,
+                modifier = Modifier.controlTag("Chip.open_in_browser"),
                 content = stringResource(R.string.open_in_browser),
                 selected = selectedOpenInBrowserPreset,
                 selectedIcon = {
@@ -162,7 +163,7 @@ private fun Preset(
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
     ) {
         RYSelectionChip(
-            modifier = Modifier,
+            modifier = Modifier.controlTag("Chip.allow_notification"),
             content = stringResource(R.string.allow_notification),
             selected = selectedAllowNotificationPreset,
             selectedIcon = {
@@ -178,7 +179,7 @@ private fun Preset(
         }
         if (notSubscribeMode) {
             RYSelectionChip(
-                modifier = Modifier,
+                modifier = Modifier.controlTag("Chip.clear_articles"),
                 content = stringResource(R.string.clear_articles),
                 selected = false,
             ) {
@@ -186,7 +187,7 @@ private fun Preset(
             }
             if (showUnsubscribe) {
                 RYSelectionChip(
-                    modifier = Modifier,
+                    modifier = Modifier.controlTag("Chip.unsubscribe"),
                     content = stringResource(R.string.unsubscribe),
                     selected = false,
                 ) {
@@ -215,7 +216,7 @@ private fun AddToGroup(
         LazyRow(verticalAlignment = Alignment.CenterVertically) {
             items(groups) {
                 RYSelectionChip(
-                    modifier = Modifier,
+                    modifier = Modifier.controlTag("Chip.Group"),
                     content = it.name,
                     selected = it.id == selectedGroupId,
                 ) {
@@ -232,7 +233,7 @@ private fun AddToGroup(
         ) {
             groups.forEach {
                 RYSelectionChip(
-                    modifier = Modifier,
+                    modifier = Modifier.controlTag("Chip.Group"),
                     content = it.name,
                     selected = it.id == selectedGroupId,
                 ) {
@@ -252,7 +253,8 @@ private fun NewGroupButton(onAddNewGroup: () -> Unit, modifier: Modifier) {
                 .size(36.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant)
-                .clickable { onAddNewGroup() },
+                .clickable { onAddNewGroup() }
+                .controlTag("Button.create_new_group"),
         contentAlignment = Alignment.Center,
     ) {
         Icon(

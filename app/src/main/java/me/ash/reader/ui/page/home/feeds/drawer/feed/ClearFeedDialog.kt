@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.home.feeds.drawer.feed
 
+import androidx.compose.ui.Modifier
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.material3.Icon
@@ -27,6 +30,7 @@ fun ClearFeedDialog(
     val toastString = stringResource(R.string.clear_articles_in_feed_toast, feedName)
 
     RYDialog(
+        overlayTag = overlayTagName("ClearFeedDialog"),
         visible = feedOptionUiState.clearDialogVisible,
         onDismissRequest = {
             feedOptionViewModel.hideClearDialog()
@@ -45,6 +49,7 @@ fun ClearFeedDialog(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.clear"),
                 onClick = {
                     feedOptionViewModel.clearFeed {
                         feedOptionViewModel.hideClearDialog()
@@ -60,6 +65,7 @@ fun ClearFeedDialog(
         },
         dismissButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.cancel"),
                 onClick = {
                     feedOptionViewModel.hideClearDialog()
                 }

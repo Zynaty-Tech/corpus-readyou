@@ -1,5 +1,7 @@
 package me.ash.reader.ui.component.base
 
+import me.ash.reader.ui.qa.ControlPrefix
+import me.ash.reader.ui.qa.screenTag
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -24,6 +26,7 @@ fun BottomDrawer(
     drawerState: ModalBottomSheetState = androidx.compose.material.rememberModalBottomSheetState(
         ModalBottomSheetValue.Hidden
     ),
+    sheetTag: String? = null,
     sheetContent: @Composable ColumnScope.() -> Unit = {},
     content: @Composable () -> Unit = {},
 ) {
@@ -39,8 +42,9 @@ fun BottomDrawer(
         sheetBackgroundColor = MaterialTheme.colorScheme.surface,
         sheetElevation = if (drawerState.isVisible) ModalBottomSheetDefaults.Elevation else 0.dp,
         sheetContent = {
+            // mqa: same window as the screen; the sheet tag is deeper, and present only while it shows
             Surface(
-                modifier = modifier,
+                modifier = if (sheetTag != null && drawerState.isVisible) modifier.screenTag(sheetTag) else modifier,
                 color = MaterialTheme.colorScheme.surface,
                 tonalElevation = 6.dp,
             ) {
@@ -65,7 +69,7 @@ fun BottomDrawer(
                         }
                         Column {
                             Spacer(modifier = Modifier.height(40.dp))
-                            sheetContent()
+                            ControlPrefix(sheetTag) { sheetContent() }
                             Spacer(modifier = Modifier.height(28.dp))
                         }
                     }

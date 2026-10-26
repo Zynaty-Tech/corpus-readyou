@@ -1,5 +1,6 @@
 package me.ash.reader.ui.component.reader
 
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -129,7 +130,7 @@ private fun ArticleImage(
                 .clip(shape)
                 .then(
                     if (onClick != null) {
-                        Modifier.clickable(onClick = onClick)
+                        Modifier.controlTag("Tap.Image").clickable(onClick = onClick)
                     } else {
                         Modifier
                     }

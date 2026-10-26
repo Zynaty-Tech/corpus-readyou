@@ -1,5 +1,7 @@
 package me.ash.reader.ui.page.settings.accounts.addition
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -60,6 +62,7 @@ fun AddFeverAccountDialog(
     var feverClientCertificateAlias by rememberSaveable { mutableStateOf("") }
 
     RYDialog(
+        overlayTag = overlayTagName("AddFeverAccountDialog"),
         modifier = Modifier.padding(horizontal = 44.dp),
         visible = uiState.addFeverAccountDialogVisible,
         properties = DialogProperties(usePlatformDefaultWidth = false),
@@ -134,6 +137,7 @@ fun AddFeverAccountDialog(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.add"),
                 enabled =
                     !accountUiState.isLoading &&
                         feverServerUrl.isNotBlank() &&
@@ -170,6 +174,7 @@ fun AddFeverAccountDialog(
         },
         dismissButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.cancel"),
                 onClick = {
                     focusManager.clearFocus()
                     accountViewModel.cancelAdd()

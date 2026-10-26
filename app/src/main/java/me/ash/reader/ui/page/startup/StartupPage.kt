@@ -1,5 +1,7 @@
 package me.ash.reader.ui.page.startup
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -52,7 +54,7 @@ fun StartupPage(
 
     RYScaffold(
         content = {
-            LazyColumn(modifier = Modifier.navigationBarsPadding()) {
+            LazyColumn(modifier = Modifier.navigationBarsPadding().controlTag("List")) {
                 item {
                     Spacer(modifier = Modifier.height(64.dp))
                     DisplayText(text = stringResource(R.string.welcome), desc = "")
@@ -73,7 +75,7 @@ fun StartupPage(
                 }
                 item {
                     TextButton(
-                        modifier = Modifier.padding(horizontal = 12.dp),
+                        modifier = Modifier.padding(horizontal = 12.dp).controlTag("Button.browse_tos_tips"),
                         onClick = { tosVisible = true },
                     ) {
                         HtmlText(
@@ -91,7 +93,7 @@ fun StartupPage(
         bottomBar = null,
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                modifier = Modifier.navigationBarsPadding(),
+                modifier = Modifier.navigationBarsPadding().controlTag("Button.agree"),
                 onClick = {
                     onNavigateToFeeds()
                     scope.launch { context.dataStore.put(DataStoreKey.isFirstLaunch, false) }
@@ -103,6 +105,7 @@ fun StartupPage(
     )
 
     RYDialog(
+        overlayTag = overlayTagName("TermsDialog"),
         visible = tosVisible,
         onDismissRequest = { tosVisible = false },
         icon = {
@@ -126,6 +129,7 @@ fun StartupPage(
         },
         confirmButton = {
             TextButton(
+                modifier = Modifier.controlTag("Button.agree"),
                 onClick = {
                     onNavigateToFeeds()
                     scope.launch { context.dataStore.put(DataStoreKey.isFirstLaunch, false) }
@@ -135,7 +139,7 @@ fun StartupPage(
             }
         },
         dismissButton = {
-            TextButton(onClick = { tosVisible = false }) {
+            TextButton(modifier = Modifier.controlTag("Button.cancel"), onClick = { tosVisible = false }) {
                 Text(text = stringResource(R.string.cancel))
             }
         },

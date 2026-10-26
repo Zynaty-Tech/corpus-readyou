@@ -1,5 +1,7 @@
 package me.ash.reader.ui.page.settings.languages
 
+import me.ash.reader.ui.qa.optionKey
+import me.ash.reader.ui.qa.controlTag
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -49,6 +51,7 @@ fun LanguagesPage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -56,11 +59,12 @@ fun LanguagesPage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item(key = languages.value) {
                     DisplayText(text = stringResource(R.string.languages), desc = "")
                     Spacer(modifier = Modifier.height(16.dp))
                     Banner(
+                        modifier = Modifier.controlTag("Tap.help_translate"),
                         title = stringResource(R.string.help_translate),
                         icon = Icons.Outlined.Lightbulb,
                         action = {
@@ -80,12 +84,13 @@ fun LanguagesPage(
                 item {
                     LanguagesPreference.values.map {
                         SettingItem(
+                            modifier = Modifier.controlTag("Tap.${optionKey(it)}"),
                             title = it.toDesc(),
                             onClick = {
                                 it.put(context, scope)
                             },
                         ) {
-                            RadioButton(selected = it == languages, onClick = {
+                            RadioButton(modifier = Modifier.controlTag("Option.${optionKey(it)}.Radio"), selected = it == languages, onClick = {
                                 it.put(context, scope)
                             })
                         }

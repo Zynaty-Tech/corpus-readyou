@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.home.feeds.subscribe
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.overlayRoot
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -68,7 +71,7 @@ fun SubscribeDialog(
         }
 
         AlertDialog(
-            modifier = Modifier.padding(horizontal = 44.dp),
+            modifier = Modifier.overlayRoot(overlayTagName("SubscribeDialog")).padding(horizontal = 44.dp),
             properties = DialogProperties(
                 usePlatformDefaultWidth = false,
                 dismissOnClickOutside = false
@@ -90,7 +93,7 @@ fun SubscribeDialog(
             },
             title = {
                 Text(
-                    modifier = Modifier.roundClick {
+                    modifier = Modifier.controlTag("Tap.Rename").roundClick {
                         if (subscribeState is SubscribeState.Configure) {
                             subscribeViewModel.showRenameDialog()
                         }
@@ -167,6 +170,7 @@ fun SubscribeDialog(
                 when (subscribeState) {
                     is SubscribeState.Configure -> {
                         TextButton(
+                            modifier = Modifier.controlTag("Button.subscribe"),
                             onClick = {
                                 focusManager.clearFocus()
                                 subscribeViewModel.subscribe()
@@ -180,6 +184,7 @@ fun SubscribeDialog(
                         val enabled =
                             subscribeState is SubscribeState.Idle && subscribeState.linkState.text.isNotBlank()
                         TextButton(
+                            modifier = Modifier.controlTag("Button.search"),
                             enabled = enabled,
                             onClick = {
                                 focusManager.clearFocus()
@@ -196,6 +201,7 @@ fun SubscribeDialog(
             dismissButton = {
                 if (subscribeState is SubscribeState.Idle && subscribeState.importFromOpmlEnabled) {
                     TextButton(
+                        modifier = Modifier.controlTag("Button.import_from_opml"),
                         onClick = {
                             focusManager.clearFocus()
                             launcher.launch(arrayOf(MimeType.ANY))
@@ -206,6 +212,7 @@ fun SubscribeDialog(
                     }
                 } else {
                     TextButton(
+                        modifier = Modifier.controlTag("Button.cancel"),
                         onClick = {
                             focusManager.clearFocus()
                             subscribeViewModel.hideDrawer()
@@ -218,6 +225,7 @@ fun SubscribeDialog(
         )
 
         RenameDialog(
+        overlayTag = overlayTagName("SubscribeRenameDialog"),
             visible = subscribeUiState.renameDialogVisible,
             value = subscribeUiState.newName,
             onValueChange = {
@@ -233,6 +241,7 @@ fun SubscribeDialog(
         )
 
         TextFieldDialog(
+        overlayTag = overlayTagName("SubscribeNewGroupDialog"),
             visible = subscribeUiState.newGroupDialogVisible,
             title = stringResource(R.string.create_new_group),
             icon = Icons.Outlined.CreateNewFolder,

@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.settings.color.reading
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.optionKey
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -42,6 +45,7 @@ fun ReadingTitlePage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -49,7 +53,7 @@ fun ReadingTitlePage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.title), desc = "")
                 }
@@ -65,7 +69,7 @@ fun ReadingTitlePage(
                                 MaterialTheme.colorScheme.inverseOnSurface
                                         onLight MaterialTheme.colorScheme.surface.copy(0.7f)
                             )
-                            .clickable { },
+                            .clickable { }.controlTag("Tap.Preview"),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -81,30 +85,33 @@ fun ReadingTitlePage(
                         text = stringResource(R.string.title)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.titleBold"),
                         title = stringResource(R.string.bold),
                         onClick = {
                             (!titleBold).put(context, scope)
                             ReadingThemePreference.Custom.put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = titleBold.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.titleBold"), activated = titleBold.value) {
                             (!titleBold).put(context, scope)
                             ReadingThemePreference.Custom.put(context, scope)
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.titleUpperCase"),
                         title = stringResource(R.string.upper_case),
                         onClick = {
                             (!titleUpperCase).put(context, scope)
                             ReadingThemePreference.Custom.put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = titleUpperCase.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.titleUpperCase"), activated = titleUpperCase.value) {
                             (!titleUpperCase).put(context, scope)
                             ReadingThemePreference.Custom.put(context, scope)
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.titleAlign"),
                         title = stringResource(R.string.alignment),
                         desc = titleAlign.toDesc(context),
                         onClick = { titleAlignDialogVisible = true },
@@ -119,30 +126,33 @@ fun ReadingTitlePage(
                         text = stringResource(R.string.subhead)
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.subtitleBold"),
                         title = stringResource(R.string.bold),
                         onClick = {
                             (!subtitleBold).put(context, scope)
                             ReadingThemePreference.Custom.put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = subtitleBold.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.subtitleBold"), activated = subtitleBold.value) {
                             (!subtitleBold).put(context, scope)
                             ReadingThemePreference.Custom.put(context, scope)
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.subheadUpperCase"),
                         title = stringResource(R.string.upper_case),
                         onClick = {
                             (!subheadUpperCase).put(context, scope)
                             ReadingThemePreference.Custom.put(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = subheadUpperCase.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.subheadUpperCase"), activated = subheadUpperCase.value) {
                             (!subheadUpperCase).put(context, scope)
                             ReadingThemePreference.Custom.put(context, scope)
                         }
                     }
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.subtitleAlign"),
                         title = stringResource(R.string.alignment),
                         desc = subtitleAlign.toDesc(context),
                         enabled = false,
@@ -161,10 +171,12 @@ fun ReadingTitlePage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("TitleAlignDialog"),
         visible = titleAlignDialogVisible,
         title = stringResource(R.string.alignment),
         options = ReadingTitleAlignPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == titleAlign,
             ) {
@@ -177,10 +189,12 @@ fun ReadingTitlePage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("SubtitleAlignDialog"),
         visible = subtitleAlignDialogVisible,
         title = stringResource(R.string.alignment),
         options = ReadingSubheadAlignPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == subtitleAlign,
             ) {

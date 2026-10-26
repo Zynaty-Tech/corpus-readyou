@@ -13,6 +13,7 @@ import me.ash.reader.ui.component.base.TextFieldDialog
 @Composable
 fun ChangeUrlDialog(
     visible: Boolean = false,
+    overlayTag: String? = null,
     value: String = "",
     onValueChange: (String) -> Unit = {},
     onDismissRequest: () -> Unit = {},
@@ -25,6 +26,7 @@ fun ChangeUrlDialog(
         }
         TextFieldDialog(
             textFieldState = textFieldState,
+            overlayTag = overlayTag,
             title = stringResource(R.string.change_url),
             icon = Icons.Outlined.Edit,
             placeholder = stringResource(R.string.feed_url_placeholder),

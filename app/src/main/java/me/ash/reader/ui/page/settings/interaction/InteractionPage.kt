@@ -1,5 +1,8 @@
 package me.ash.reader.ui.page.settings.interaction
 
+import me.ash.reader.ui.qa.controlTag
+import me.ash.reader.ui.qa.optionKey
+import me.ash.reader.ui.qa.overlayTagName
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
@@ -89,6 +92,7 @@ fun InteractionPage(
         containerColor = MaterialTheme.colorScheme.surface onLight MaterialTheme.colorScheme.inverseOnSurface,
         navigationIcon = {
             FeedbackIconButton(
+                buttonModifier = Modifier.controlTag("Action.back"),
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(R.string.back),
                 tint = MaterialTheme.colorScheme.onSurface,
@@ -96,7 +100,7 @@ fun InteractionPage(
             )
         },
         content = {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.controlTag("List")) {
                 item {
                     DisplayText(text = stringResource(R.string.interaction), desc = "")
                     Spacer(modifier = Modifier.height(16.dp))
@@ -107,6 +111,7 @@ fun InteractionPage(
                         text = stringResource(R.string.on_start),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.initialPage"),
                         title = stringResource(R.string.initial_page),
                         desc = initialPage.toDesc(context),
                         onClick = {
@@ -114,6 +119,7 @@ fun InteractionPage(
                         },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.initialFilter"),
                         title = stringResource(R.string.initial_filter),
                         desc = initialFilter.toDesc(context),
                         onClick = {
@@ -127,12 +133,13 @@ fun InteractionPage(
                         text = stringResource(R.string.feeds_page),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.hideEmptyGroups"),
                         title = stringResource(R.string.hide_empty_groups),
                         onClick = {
                             hideEmptyGroups.toggle(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = hideEmptyGroups.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.hideEmptyGroups"), activated = hideEmptyGroups.value) {
                             hideEmptyGroups.toggle(context, scope)
                         }
                     }
@@ -143,6 +150,7 @@ fun InteractionPage(
                         text = stringResource(R.string.article_list),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.swipeStart"),
                         title = stringResource(R.string.swipe_to_start),
                         desc = swipeToStartAction.desc,
                         onClick = {
@@ -150,6 +158,7 @@ fun InteractionPage(
                         },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.swipeEnd"),
                         title = stringResource(R.string.swipe_to_end),
                         desc = swipeToEndAction.desc,
                         onClick = {
@@ -158,6 +167,7 @@ fun InteractionPage(
                     ) {}
 
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.SortUnreadArticles"),
                         title = stringResource(R.string.sort_unread_articles),
                         onClick = {
                             showSortUnreadArticlesDialog = true
@@ -167,17 +177,19 @@ fun InteractionPage(
                     }
 
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.markAsReadOnScroll"),
                         title = stringResource(R.string.mark_as_read_on_scroll),
                         onClick = {
                             markAsReadOnScroll.toggle(context, scope)
                         },
                     ) {
-                        RYSwitch(activated = markAsReadOnScroll.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.markAsReadOnScroll"), activated = markAsReadOnScroll.value) {
                             markAsReadOnScroll.toggle(context, scope)
                         }
                     }
 
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.PullToLoad"),
                         title = stringResource(R.string.pull_from_bottom),
                         desc = pullToSwitchFeed.description(),
                         onClick = {
@@ -192,9 +204,10 @@ fun InteractionPage(
                         text = stringResource(R.string.reading_page),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.pullToSwitchArticle"),
                         title = stringResource(id = R.string.pull_to_switch_article),
                         onClick = { pullToSwitchArticle.toggle(context, scope) }) {
-                        RYSwitch(activated = pullToSwitchArticle.value) {
+                        RYSwitch(modifier = Modifier.controlTag("Switch.pullToSwitchArticle"), activated = pullToSwitchArticle.value) {
                             pullToSwitchArticle.toggle(context, scope)
                         }
                     }
@@ -205,6 +218,7 @@ fun InteractionPage(
                         text = stringResource(R.string.external_links),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.openLink"),
                         title = stringResource(R.string.initial_open_app),
                         desc = openLink.toDesc(context),
                         onClick = {
@@ -212,6 +226,7 @@ fun InteractionPage(
                         },
                     ) {}
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.openLinkSpecificBrowser"),
                         title = stringResource(R.string.open_link_specific_browser),
                         desc = openLinkSpecificBrowser.toDesc(context),
                         enabled = isOpenLinkSpecificBrowserItemEnabled,
@@ -229,6 +244,7 @@ fun InteractionPage(
                         text = stringResource(R.string.share),
                     )
                     SettingItem(
+                        modifier = Modifier.controlTag("Tap.sharedContent"),
                         title = stringResource(R.string.shared_content),
                         desc = sharedContent.toDesc(context),
                         onClick = {
@@ -246,10 +262,12 @@ fun InteractionPage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("InitialPageDialog"),
         visible = initialPageDialogVisible,
         title = stringResource(R.string.initial_page),
         options = InitialPagePreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == initialPage,
             ) {
@@ -261,10 +279,12 @@ fun InteractionPage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("InitialFilterDialog"),
         visible = initialFilterDialogVisible,
         title = stringResource(R.string.initial_filter),
         options = InitialFilterPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == initialFilter,
             ) {
@@ -276,10 +296,12 @@ fun InteractionPage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("SwipeStartDialog"),
         visible = swipeStartDialogVisible,
         title = stringResource(R.string.swipe_to_start),
         options = SwipeStartActionPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.desc,
                 selected = it == swipeToStartAction,
             ) {
@@ -291,10 +313,12 @@ fun InteractionPage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("SwipeEndDialog"),
         visible = swipeEndDialogVisible,
         title = stringResource(R.string.swipe_to_end),
         options = SwipeEndActionPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.desc,
                 selected = it == swipeToEndAction,
             ) {
@@ -307,10 +331,12 @@ fun InteractionPage(
 
 
     RadioDialog(
+        overlayTag = overlayTagName("OpenLinkDialog"),
         visible = openLinkDialogVisible,
         title = stringResource(R.string.initial_open_app),
         options = OpenLinkPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == openLink,
             ) {
@@ -326,10 +352,12 @@ fun InteractionPage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("OpenLinkSpecificBrowserDialog"),
         visible = openLinkSpecificBrowserDialogVisible,
         title = stringResource(R.string.open_link_specific_browser),
         options = browserList.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.loadLabel(context.packageManager).toString(),
                 selected = it.activityInfo.packageName == openLinkSpecificBrowser.packageName,
             ) {
@@ -343,10 +371,12 @@ fun InteractionPage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("SharedContentDialog"),
         visible = sharedContentDialogVisible,
         title = stringResource(R.string.shared_content),
         options = SharedContentPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.toDesc(context),
                 selected = it == sharedContent,
             ) {
@@ -358,10 +388,12 @@ fun InteractionPage(
     }
 
     RadioDialog(
+        overlayTag = overlayTagName("SortUnreadArticlesDialog"),
         visible = showSortUnreadArticlesDialog,
         title = stringResource(R.string.sort_unread_articles),
         options = SortUnreadArticlesPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.description(),
                 selected = it == sortUnreadArticles,
             ) {
@@ -374,10 +406,12 @@ fun InteractionPage(
     )
 
     RadioDialog(
+        overlayTag = overlayTagName("PullToLoadDialog"),
         visible = showPullToLoadDialog,
         title = stringResource(R.string.pull_from_bottom),
         options = PullToLoadNextFeedPreference.values.map {
             RadioDialogOption(
+                key = optionKey(it),
                 text = it.description(),
                 selected = it == pullToSwitchFeed,
             ) {
